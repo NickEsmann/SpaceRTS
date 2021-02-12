@@ -6,13 +6,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace SpaceRTS
 {
-    class Mine
+    internal class Mine
     {
-
         private Texture2D mine;
-        //private Vector2 
-
-
-
+        //private Vector2
     }
 }
