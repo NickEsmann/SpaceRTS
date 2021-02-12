@@ -11,12 +11,15 @@ namespace SpaceRTS
         private SpriteBatch _spriteBatch;
         private Map map;
         private List<GameObject> gameObjects;
+        
 
         public GameWorld()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            _graphics.PreferredBackBufferWidth = 1920;
+            _graphics.PreferredBackBufferHeight = 1080;
         }
 
         protected override void Initialize()

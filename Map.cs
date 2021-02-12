@@ -9,8 +9,8 @@ namespace SpaceRTS
 {
     class Map
     {
-        private int row = 15;
-        private int col = 15;
+        private int row = 30;
+        private int col = 17;
         private int gridSize = 65;
         private List<GameObject> grid;
         public Map()
