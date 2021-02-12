@@ -12,7 +12,6 @@ namespace SpaceRTS
         public int Lv;
         private int GoldCapasity;
         private int CurrentGold;
-        private Texture2D Sprite;
         private float timer = 0.0f;
         private float cooldownTime = 2;
 
