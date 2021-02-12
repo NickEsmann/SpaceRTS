@@ -25,3 +25,15 @@
 /processorParam:TextureFormat=Color
 /build:Map/scifiTile_41.png
 
+#begin PNG/Retina/Environment/scifiEnvironment_06.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:PNG/Retina/Environment/scifiEnvironment_06.png
+

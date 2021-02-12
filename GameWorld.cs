@@ -11,7 +11,6 @@ namespace SpaceRTS
         private SpriteBatch _spriteBatch;
         private Map map;
         private List<GameObject> gameObjects;
-        
 
         public GameWorld()
         {
@@ -47,7 +46,8 @@ namespace SpaceRTS
             {
                 go.Update(gameTime);
             }
-                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             // TODO: Add your update logic here
@@ -59,11 +59,10 @@ namespace SpaceRTS
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin();
-            
+
             foreach (GameObject go in gameObjects)
             {
                 go.Draw(_spriteBatch);
-
             }
 
             map.Draw(_spriteBatch);

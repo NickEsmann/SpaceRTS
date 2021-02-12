@@ -4,16 +4,18 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace SpaceRTS
 {
-    class Tile : GameObject
+    internal class Tile : GameObject
     {
         private int x;
         private int y;
+
         public Tile(int x, int y, int tileSize)
         {
-            position = new Vector2(x * tileSize, y* tileSize);
+            position = new Vector2(x * tileSize, y * tileSize);
             color = Color.White;
         }
 
@@ -24,12 +26,10 @@ namespace SpaceRTS
 
         public override void OnCollision(GameObject other)
         {
-            
         }
 
         public override void Update(GameTime gameTime)
         {
-
         }
     }
 }
