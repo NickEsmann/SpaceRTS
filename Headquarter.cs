@@ -34,7 +34,7 @@ namespace SpaceRTS
 
         public override void LoadContent(ContentManager contentManager)
         {
-            Sprite = contentManager.Load<Texture2D>("scifiStructure_07");
+            Sprite = contentManager.Load<Texture2D>("kenney_rtssci-fi/PNG/Retina/Structure/scifiStructure_07");
         }
 
         public override void Update(GameTime gametime)
@@ -47,11 +47,12 @@ namespace SpaceRTS
 
         public override void OnCollision(GameObject other)
         {
-            if (other is Worker && timer > cooldownTime)
+            /*if (other is Worker && timer > cooldownTime)
             {
-                AddGold(Worker.Gold);
+                //AddGold(Worker.Gold);
                 timer = 0;
             }
+            */
         }
     }
 }
