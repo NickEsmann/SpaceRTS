@@ -10,7 +10,7 @@ namespace SpaceRTS
     {
 
         private Texture2D mine;
-        private Vector2 
+        //private Vector2 
 
 
 

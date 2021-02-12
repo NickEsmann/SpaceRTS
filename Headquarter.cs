@@ -16,8 +16,11 @@ namespace SpaceRTS
         private float timer = 0.0f;
         private float cooldownTime = 2;
 
-        public Headquarter()
+        public Headquarter(Vector2 position)
         {
+            sprite = GameWorld.sprites["HQ"];
+            this.position = position;
+            color = Color.White;
         }
 
         public void AddGold(int Gold)
@@ -34,7 +37,7 @@ namespace SpaceRTS
 
         public override void LoadContent(ContentManager contentManager)
         {
-            Sprite = contentManager.Load<Texture2D>("kenney_rtssci-fi/PNG/Retina/Structure/scifiStructure_07");
+            //sprite = contentManager.Load<Texture2D>("kenney_rtssci-fi/PNG/Retina/Structure/scifiStructure_07");
         }
 
         public override void Update(GameTime gametime)
