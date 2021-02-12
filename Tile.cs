@@ -22,6 +22,11 @@ namespace SpaceRTS
             sprite = content.Load<Texture2D>("Map/scifiTile_41");
         }
 
+        public override void OnCollision(GameObject other)
+        {
+            
+        }
+
         public override void Update(GameTime gameTime)
         {
 
