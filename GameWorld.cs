@@ -11,6 +11,7 @@ namespace SpaceRTS
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Map map;
+        private Worker worker;
         private List<GameObject> gameObjects;
         private List<GameObject> Building;
         public static Dictionary<string, Texture2D> sprites = new Dictionary<string, Texture2D>();
@@ -28,6 +29,7 @@ namespace SpaceRTS
         {
             // TODO: Add your initialization logic here
             map = new Map();
+            //worker = new Worker();
             gameObjects = new List<GameObject>();
             Building = new List<GameObject>();
             base.Initialize();
@@ -41,7 +43,9 @@ namespace SpaceRTS
                 go.LoadContent(this.Content);
             }
             map.LoadContent(Content);
-            sprites.Add("HQ", Content.Load<Texture2D>("scifiStructure_07"));
+
+            sprites.Add("HQ", Content.Load<Texture2D>("HQ"));
+            sprites.Add("Mine", Content.Load<Texture2D>("Mine"));
             // TODO: use this.Content to load your game content here
         }
 
@@ -51,9 +55,9 @@ namespace SpaceRTS
             {
                 go.Update(gameTime);
             }
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
-                    Exit();
+
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
+                Exit();
 
             // TODO: Add your update logic here
             gameObjects.AddRange(Building);
@@ -89,17 +93,13 @@ namespace SpaceRTS
                     for (int y = 0; y < 17; y++)
                     {
                         Rectangle rect = new Rectangle(x, y, 65, 65);
-                        if(new Rectangle(Cursor.Position.X, Cursor.Position.Y, 1,1).Intersects(new Rectangle(x * 65, y * 65, 65, 65)))
+                        if (new Rectangle(Cursor.Position.X, Cursor.Position.Y, 1, 1).Intersects(new Rectangle(x * 65, y * 65, 65, 65)))
                         {
                             Building.Add(new Headquarter(new Vector2(x * 65, y * 65)));
                         }
                     }
                 }
-                
             }
-
-            
-            
         }
     }
 }

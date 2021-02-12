@@ -9,25 +9,27 @@ namespace SpaceRTS
 {
     internal class Mine : GameObject
     {
-        private Texture2D mine;
         public int GoldCapasity;
         private float timer;
-        private float cooldownTime;
+        private float cooldownTime = 2;
+        public static new Vector2 position;
+
+        public Mine()
+        {
+            sprite = GameWorld.sprites["Mine"];
+        }
 
         public override void LoadContent(ContentManager content)
         {
-            mine = content.Load<Texture2D>("PNG/Retina/Environment/scifiEnvironment_06");
         }
 
         public override void OnCollision(GameObject other)
         {
-            /*
             if (other is Worker && timer > cooldownTime)
             {
-                Worker.Gold = Worker.Gold + 100;
+                Worker.currentGold += 100;
             }
             timer = 0;
-            */
         }
 
         public override void Update(GameTime gametime)
