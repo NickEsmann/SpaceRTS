@@ -84,10 +84,24 @@ namespace SpaceRTS
         {
             MouseState mouseClick = Mouse.GetState();
 
-            if(mouseClick.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+            if (mouseClick.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
             {
-                Building.Add(new Headquarter(new Vector2(Cursor.Position.X, Cursor.Position.Y)));
+                for (int x = 0; x < 30; x++)
+                {
+                    for (int y = 0; y < 17; y++)
+                    {
+                        Rectangle rect = new Rectangle(x, y, 65, 65);
+                        if(new Rectangle(Cursor.Position.X, Cursor.Position.Y, 1,1).Intersects(new Rectangle(x * 65, y * 65, 65, 65)))
+                        {
+                            Building.Add(new Headquarter(new Vector2(x * 65, y * 65)));
+                        }
+                    }
+                }
+                
             }
+
+            
+            
         }
     }
 }

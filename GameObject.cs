@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace SpaceRTS
 {
-    internal abstract class GameObject
+    abstract class GameObject
     {
         protected Texture2D sprite;
         protected Vector2 position;
