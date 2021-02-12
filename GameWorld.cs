@@ -15,7 +15,6 @@ namespace SpaceRTS
         private List<GameObject> Building;
         public static Dictionary<string, Texture2D> sprites = new Dictionary<string, Texture2D>();
 
-
         public GameWorld()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -52,8 +51,9 @@ namespace SpaceRTS
             {
                 go.Update(gameTime);
             }
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
-                Exit();
+                    Exit();
 
             // TODO: Add your update logic here
             gameObjects.AddRange(Building);
@@ -70,10 +70,8 @@ namespace SpaceRTS
             foreach (GameObject go in gameObjects)
             {
                 go.Draw(_spriteBatch);
-
             }
 
-            
             _spriteBatch.End();
             // TODO: Add your drawing code here
 
