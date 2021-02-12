@@ -7,24 +7,24 @@ using System.Text;
 
 namespace SpaceRTS
 {
-    class Map
+    internal class Map
     {
         private int row;
         private int col;
         private int gridSize;
         private List<GameObject> grid;
+
         public Map()
         {
             grid = new List<GameObject>();
             mapMaker();
         }
 
-
         public void LoadContent(ContentManager content)
         {
             foreach (GameObject go in grid)
             {
-                go.LoadContent(content); 
+                go.LoadContent(content);
             }
         }
 
@@ -32,7 +32,7 @@ namespace SpaceRTS
         {
             foreach (GameObject go in grid)
             {
-                go.Draw(spriteBatch); 
+                go.Draw(spriteBatch);
             }
         }
 

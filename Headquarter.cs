@@ -7,12 +7,14 @@ using System.Text;
 
 namespace SpaceRTS
 {
-    internal class Headquarter
+    internal class Headquarter : GameObject
     {
         public int Lv;
         private int GoldCapasity;
         private int CurrentGold;
         private Texture2D Sprite;
+        private float timer = 0.0f;
+        private float cooldownTime = 2;
 
         public Headquarter()
         {
@@ -33,6 +35,23 @@ namespace SpaceRTS
         public override void LoadContent(ContentManager contentManager)
         {
             Sprite = contentManager.Load<Texture2D>("scifiStructure_07");
+        }
+
+        public override void Update(GameTime gametime)
+        {
+            if (timer < cooldownTime + 1)
+            {
+                timer += (float)gametime.ElapsedGameTime.TotalSeconds;
+            }
+        }
+
+        public override void OnCollision(GameObject other)
+        {
+            if (other is Worker && timer > cooldownTime)
+            {
+                AddGold(Worker.Gold);
+                timer = 0;
+            }
         }
     }
 }
