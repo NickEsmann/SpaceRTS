@@ -55,7 +55,6 @@ namespace SpaceRTS
             {
                 go.Update(gameTime);
             }
-
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
                 Exit();
 
