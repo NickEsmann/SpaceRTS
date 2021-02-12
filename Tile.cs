@@ -9,15 +9,17 @@ namespace SpaceRTS
 {
     class Tile : GameObject
     {
-
+        private int x;
+        private int y;
         public Tile(int x, int y, int tileSize)
         {
             position = new Vector2(x * tileSize, y* tileSize);
+            color = Color.White;
         }
 
         public override void LoadContent(ContentManager content)
         {
-            content.Load<Texture2D>("Map/scifiTile_41");
+            sprite = content.Load<Texture2D>("Map/scifiTile_41");
         }
 
         public override void Update(GameTime gameTime)
