@@ -9,9 +9,9 @@ namespace SpaceRTS
 {
     class Map
     {
-        private int row;
-        private int col;
-        private int gridSize;
+        private int row = 15;
+        private int col = 15;
+        private int gridSize = 65;
         private List<GameObject> grid;
         public Map()
         {
@@ -38,11 +38,11 @@ namespace SpaceRTS
 
         private void mapMaker()
         {
-            for (int i = 0; i < row; i++)
+            for (int x = 0; x < row; x++)
             {
-                for (int j = 0; j < col; j++)
+                for (int y = 0; y < col; y++)
                 {
-                    grid.Add(new Tile(row, col, gridSize));
+                    grid.Add(new Tile(x, y, gridSize));
                 }
             }
         }
