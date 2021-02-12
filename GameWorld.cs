@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace SpaceRTS
 {
@@ -11,6 +12,8 @@ namespace SpaceRTS
         private SpriteBatch _spriteBatch;
         private Map map;
         private List<GameObject> gameObjects;
+        private List<GameObject> Building;
+        public static Dictionary<string, Texture2D> sprites = new Dictionary<string, Texture2D>();
 
         public GameWorld()
         {
@@ -26,6 +29,7 @@ namespace SpaceRTS
             // TODO: Add your initialization logic here
             map = new Map();
             gameObjects = new List<GameObject>();
+            Building = new List<GameObject>();
             base.Initialize();
         }
 
@@ -37,6 +41,7 @@ namespace SpaceRTS
                 go.LoadContent(this.Content);
             }
             map.LoadContent(Content);
+            sprites.Add("HQ", Content.Load<Texture2D>("scifiStructure_07"));
             // TODO: use this.Content to load your game content here
         }
 
@@ -46,12 +51,14 @@ namespace SpaceRTS
             {
                 go.Update(gameTime);
             }
-
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
+                    Exit();
 
             // TODO: Add your update logic here
-
+            gameObjects.AddRange(Building);
+            Building.Clear();
+            buildBuilding();
             base.Update(gameTime);
         }
 
@@ -59,17 +66,26 @@ namespace SpaceRTS
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin();
-
+            map.Draw(_spriteBatch);
             foreach (GameObject go in gameObjects)
             {
                 go.Draw(_spriteBatch);
             }
 
-            map.Draw(_spriteBatch);
             _spriteBatch.End();
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
+        }
+
+        private void buildBuilding()
+        {
+            MouseState mouseClick = Mouse.GetState();
+
+            if (mouseClick.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+            {
+                Building.Add(new Headquarter(new Vector2(Cursor.Position.X, Cursor.Position.Y)));
+            }
         }
     }
 }
