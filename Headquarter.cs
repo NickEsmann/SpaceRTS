@@ -24,13 +24,13 @@ namespace SpaceRTS
             {
                 Lv++;
                 CurrentGold = 0;
-                GoldCapasity = CurrentGold * 2;
+                GoldCapasity = GoldCapasity * 2;
             }
             else
                 CurrentGold += Gold;
         }
 
-        public void LoadContent(ContentManager contentManager)
+        public override void LoadContent(ContentManager contentManager)
         {
             Sprite = contentManager.Load<Texture2D>("scifiStructure_07");
         }
