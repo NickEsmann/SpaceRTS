@@ -29,7 +29,7 @@ namespace SpaceRTS
         {
             // TODO: Add your initialization logic here
             map = new Map();
-            //worker = new Worker();
+            worker = new Worker();
             gameObjects = new List<GameObject>();
             Building = new List<GameObject>();
             base.Initialize();
