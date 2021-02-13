@@ -14,11 +14,12 @@ namespace SpaceRTS
         private int CurrentGold;
         private float timer = 0.0f;
         private float cooldownTime = 2;
-        public static Vector2 position;
+        public static Vector2 positionHG;
 
         public Headquarter(Vector2 position)
         {
             sprite = GameWorld.sprites["HQ"];
+            this.position = position;
             color = Color.White;
         }
 

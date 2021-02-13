@@ -10,7 +10,7 @@ namespace SpaceRTS
     internal abstract class GameObject
     {
         protected Texture2D sprite;
-        protected static Vector2 position;
+        protected Vector2 position;
         protected Color color;
         protected Vector2 origin;
         protected float rotation;

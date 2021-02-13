@@ -31,12 +31,12 @@ namespace SpaceRTS
             if (currentGold <= goldCap)
             {
                 //Gå til HQ
-                if (position.X < Headquarter.position.X)
+                if (position.X < Headquarter.positionHG.X)
                     position.X++;
                 else
                     position.X--;
 
-                if (position.Y < Headquarter.position.Y)
+                if (position.Y < Headquarter.positionHG.Y)
                     position.Y++;
                 else
                     position.Y--;
