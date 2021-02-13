@@ -15,6 +15,10 @@ namespace SpaceRTS
         private List<GameObject> gameObjects;
         private List<GameObject> Building;
         public static Dictionary<string, Texture2D> sprites = new Dictionary<string, Texture2D>();
+        private bool IsClicked = false;
+        bool Clicked = false;
+        Texture2D t;
+        Vector2 currentMousPosition = new Vector2(Cursor.Position.X, Cursor.Position.Y);
 
         public GameWorld()
         {
@@ -43,7 +47,8 @@ namespace SpaceRTS
                 go.LoadContent(this.Content);
             }
             map.LoadContent(Content);
-
+            t = new Texture2D(GraphicsDevice, 1, 1);
+            t.SetData<Color>(new Color[] { Color.White });
             sprites.Add("HQ", Content.Load<Texture2D>("HQ"));
             sprites.Add("Mine", Content.Load<Texture2D>("Mine"));
             // TODO: use this.Content to load your game content here
@@ -75,6 +80,17 @@ namespace SpaceRTS
                 go.Draw(_spriteBatch);
             }
 
+            Rectangle buildOption1 = new Rectangle((int)currentMousPosition.X, (int)currentMousPosition.Y, 200, 50);
+            Rectangle buildOption2 = new Rectangle((int)currentMousPosition.X, (int)currentMousPosition.Y + 51, 200, 50);
+            Rectangle buildOption3 = new Rectangle((int)currentMousPosition.X, (int)currentMousPosition.Y + 102, 200, 50);
+            
+            if (IsClicked)
+            {
+                _spriteBatch.Draw(t,buildOption1, Color.Black);
+                _spriteBatch.Draw(t, buildOption2, Color.Black);
+                _spriteBatch.Draw(t, buildOption3, Color.Black);
+            }
+            
             _spriteBatch.End();
             // TODO: Add your drawing code here
 
@@ -85,7 +101,7 @@ namespace SpaceRTS
         {
             MouseState mouseClick = Mouse.GetState();
 
-            if (mouseClick.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+            if (mouseClick.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed && Clicked == false)
             {
                 for (int x = 0; x < 30; x++)
                 {
@@ -94,11 +110,19 @@ namespace SpaceRTS
                         Rectangle rect = new Rectangle(x, y, 65, 65);
                         if (new Rectangle(Cursor.Position.X, Cursor.Position.Y, 1, 1).Intersects(new Rectangle(x * 65, y * 65, 65, 65)))
                         {
+                            
+                            //IsClicked = true;
                             Building.Add(new Headquarter(new Vector2(x * 65, y * 65)));
                         }
                     }
                 }
+                Clicked = true;
             }
+            if(mouseClick.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Released)
+            {
+                Clicked = false;
+            }
+
         }
     }
 }
