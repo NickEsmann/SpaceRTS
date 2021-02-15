@@ -32,8 +32,6 @@ namespace SpaceRTS
         private bool canPlace;
         private Vector2 buildPos;
         private bool HQPlaced = false;
-        private Vector2 HGText;
-        private SpriteFont headLine;
 
         public GameWorld()
         {
@@ -78,7 +76,6 @@ namespace SpaceRTS
             sprites.Add("Factory", Content.Load<Texture2D>("Factory"));
             sprites.Add("Lab", Content.Load<Texture2D>("Lab"));
             font = Content.Load<SpriteFont>("font");
-            headLine = Content.Load<SpriteFont>("HeadLine");
             // TODO: use this.Content to load your game content here
         }
 
@@ -97,15 +94,14 @@ namespace SpaceRTS
             Building.Clear();
             miner.Clear();
 
-            if(!HQPlaced)
+            if (!HQPlaced)
             {
                 BuildHQ();
             }
-            if(HQPlaced)
+            if (HQPlaced)
             {
                 buildBuilding();
             }
-
 
             base.Update(gameTime);
         }
@@ -145,10 +141,6 @@ namespace SpaceRTS
                     _spriteBatch.DrawString(font, "4. Lab", textPos4, Color.White);
                 }
             }
-            if(!HQPlaced)
-            {
-                _spriteBatch.DrawString(headLine, "Press mouse 1 to place your HQ where you desire", HGText, Color.Blue);
-            }
 
             _spriteBatch.End();
             // TODO: Add your drawing code here
@@ -158,9 +150,8 @@ namespace SpaceRTS
 
         private void BuildHQ()
         {
-            HGText = new Vector2(600, 75);
             MouseState mouseHQClick = Mouse.GetState();
-            if(mouseHQClick.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+            if (mouseHQClick.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
             {
                 for (int x = 0; x < 30; x++)
                 {
@@ -172,10 +163,8 @@ namespace SpaceRTS
                             Building.Add(new Headquarter(new Vector2(x * 65, y * 65)));
                             HQPlaced = true;
                         }
-                        
                     }
                 }
-                        
             }
         }
 
