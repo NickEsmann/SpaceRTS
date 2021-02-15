@@ -31,6 +31,7 @@ namespace SpaceRTS
         private Vector2 textPos4;
         private bool canPlace;
         private Vector2 buildPos;
+        private bool HQPlaced = false;
 
         public GameWorld()
         {
@@ -47,11 +48,11 @@ namespace SpaceRTS
             map = new Map();
             worker = new Worker(1);
             miner = new List<GameObject>();
-            miner.Add(new Mine(new Vector2(300, 100)));
-            miner.Add(new Mine(new Vector2(500, 800)));
-            miner.Add(new Mine(new Vector2(700, 200)));
-            miner.Add(new Mine(new Vector2(1270, 400)));
-            miner.Add(new Mine(new Vector2(1400, 700)));
+            //miner.Add(new Mine(new Vector2(300, 100)));
+            //miner.Add(new Mine(new Vector2(500, 800)));
+            //miner.Add(new Mine(new Vector2(700, 200)));
+            //miner.Add(new Mine(new Vector2(1270, 400)));
+            //miner.Add(new Mine(new Vector2(1400, 700)));
             gameObjects = new List<GameObject>();
             Building = new List<GameObject>();
             gameObjects.Add(worker);
@@ -92,7 +93,17 @@ namespace SpaceRTS
             gameObjects.AddRange(miner);
             Building.Clear();
             miner.Clear();
-            buildBuilding();
+
+            if(!HQPlaced)
+            {
+                BuildHQ();
+            }
+            if(HQPlaced)
+            {
+                buildBuilding();
+            }
+
+
             base.Update(gameTime);
         }
 
@@ -140,7 +151,24 @@ namespace SpaceRTS
 
         private void BuildHQ()
         {
-
+            MouseState mouseHQClick = Mouse.GetState();
+            if(mouseHQClick.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+            {
+                for (int x = 0; x < 30; x++)
+                {
+                    for (int y = 0; y < 17; y++)
+                    {
+                        Rectangle rect = new Rectangle(x, y, 65, 65);
+                        if (new Rectangle(Cursor.Position.X, Cursor.Position.Y, 1, 1).Intersects(new Rectangle(x * 65, y * 65, 65, 65)))
+                        {
+                            Building.Add(new Headquarter(new Vector2(x * 65, y * 65)));
+                            HQPlaced = true;
+                        }
+                        
+                    }
+                }
+                        
+            }
         }
 
         private void buildBuilding()
