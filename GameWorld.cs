@@ -137,6 +137,11 @@ namespace SpaceRTS
             base.Draw(gameTime);
         }
 
+        private void BuildHQ()
+        {
+
+        }
+
         private void buildBuilding()
         {
             MouseState mouseClick = Mouse.GetState();
