@@ -32,6 +32,8 @@ namespace SpaceRTS
         private bool canPlace;
         private Vector2 buildPos;
         private bool HQPlaced = false;
+        private Vector2 HGText;
+        private SpriteFont headLine;
 
         public GameWorld()
         {
@@ -76,6 +78,7 @@ namespace SpaceRTS
             sprites.Add("Factory", Content.Load<Texture2D>("Factory"));
             sprites.Add("Lab", Content.Load<Texture2D>("Lab"));
             font = Content.Load<SpriteFont>("font");
+            headLine = Content.Load<SpriteFont>("HeadLine");
             // TODO: use this.Content to load your game content here
         }
 
@@ -142,6 +145,10 @@ namespace SpaceRTS
                     _spriteBatch.DrawString(font, "4. Lab", textPos4, Color.White);
                 }
             }
+            if(!HQPlaced)
+            {
+                _spriteBatch.DrawString(headLine, "Press mouse 1 to place your HQ where you desire", HGText, Color.Blue);
+            }
 
             _spriteBatch.End();
             // TODO: Add your drawing code here
@@ -151,6 +158,7 @@ namespace SpaceRTS
 
         private void BuildHQ()
         {
+            HGText = new Vector2(600, 75);
             MouseState mouseHQClick = Mouse.GetState();
             if(mouseHQClick.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
             {
