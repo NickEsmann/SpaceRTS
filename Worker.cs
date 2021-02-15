@@ -43,12 +43,12 @@ namespace SpaceRTS
             }
             else
             //Gå til HQ
-            if (position.X < Mine.position.X)
+            if (position.X < Mine.minePosition.X)
                 position.X++;
             else
                 position.X--;
 
-            if (position.Y < Mine.position.Y)
+            if (position.Y < Mine.minePosition.Y)
                 position.Y++;
             else
                 position.Y--;

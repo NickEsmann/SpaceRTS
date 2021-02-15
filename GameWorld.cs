@@ -13,19 +13,24 @@ namespace SpaceRTS
         private SpriteBatch _spriteBatch;
         private Map map;
         private Worker worker;
+        private Mine mine;
+        private List<GameObject> miner;
         private List<GameObject> gameObjects;
         private List<GameObject> Building;
         public static Dictionary<string, Texture2D> sprites = new Dictionary<string, Texture2D>();
+        private bool IsClicked = false;
+        private bool Clicked = false;
+        private Texture2D t;
+        private Vector2 currentMousPosition = new Vector2(Cursor.Position.X, Cursor.Position.Y);
         private bool DropDownMenu = false;
-        List<Rectangle> rects = new List<Rectangle>();
-        bool Clicked = false;
-        Texture2D t;
-        Vector2 currentMousPosition = new Vector2(Cursor.Position.X, Cursor.Position.Y);
-        SpriteFont font;
-        Vector2 textPos1;
-        Vector2 textPos2;
-        bool canPlace;
-        Vector2 buildPos;
+        private List<Rectangle> rects = new List<Rectangle>();
+        private SpriteFont font;
+        private Vector2 textPos1;
+        private Vector2 textPos2;
+        private Vector2 textPos3;
+        private Vector2 textPos4;
+        private bool canPlace;
+        private Vector2 buildPos;
 
         public GameWorld()
         {
@@ -41,6 +46,12 @@ namespace SpaceRTS
             // TODO: Add your initialization logic here
             map = new Map();
             worker = new Worker();
+            miner = new List<GameObject>();
+            miner.Add(new Mine(new Vector2(150, 100)));
+            miner.Add(new Mine(new Vector2(500, 800)));
+            miner.Add(new Mine(new Vector2(700, 200)));
+            miner.Add(new Mine(new Vector2(1270, 400)));
+            miner.Add(new Mine(new Vector2(1400, 700)));
             gameObjects = new List<GameObject>();
             Building = new List<GameObject>();
             base.Initialize();
@@ -48,6 +59,7 @@ namespace SpaceRTS
 
         protected override void LoadContent()
         {
+            gameObjects.AddRange(miner);
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             foreach (GameObject go in gameObjects)
             {
@@ -58,7 +70,9 @@ namespace SpaceRTS
             t.SetData<Color>(new Color[] { Color.White });
             sprites.Add("HQ", Content.Load<Texture2D>("HQ"));
             sprites.Add("Barack", Content.Load<Texture2D>("Barack"));
-            sprites.Add("Mine", Content.Load<Texture2D>("Mine"));
+            sprites.Add("Bank", Content.Load<Texture2D>("Bank"));
+            sprites.Add("Factory", Content.Load<Texture2D>("Factory"));
+            sprites.Add("Lab", Content.Load<Texture2D>("Lab"));
             font = Content.Load<SpriteFont>("font");
             // TODO: use this.Content to load your game content here
         }
@@ -74,7 +88,9 @@ namespace SpaceRTS
 
             // TODO: Add your update logic here
             gameObjects.AddRange(Building);
+            gameObjects.AddRange(miner);
             Building.Clear();
+            miner.Clear();
             buildBuilding();
             base.Update(gameTime);
         }
@@ -89,22 +105,31 @@ namespace SpaceRTS
                 go.Draw(_spriteBatch);
             }
 
-            
-            
+            Rectangle buildOption1 = new Rectangle((int)currentMousPosition.X, (int)currentMousPosition.Y, 200, 50);
+            Rectangle buildOption2 = new Rectangle((int)currentMousPosition.X, (int)currentMousPosition.Y + 51, 200, 50);
+            Rectangle buildOption3 = new Rectangle((int)currentMousPosition.X, (int)currentMousPosition.Y + 102, 200, 50);
+
+            if (IsClicked)
+            {
+                _spriteBatch.Draw(t, buildOption1, Color.Black);
+                _spriteBatch.Draw(t, buildOption2, Color.Black);
+                _spriteBatch.Draw(t, buildOption3, Color.Black);
+            }
+
             if (DropDownMenu)
             {
-                foreach(Rectangle r in rects)
+                foreach (Rectangle r in rects)
                 {
                     _spriteBatch.Draw(t, r, Color.Black);
                 }
-                if(rects.Count > 1)
+                if (rects.Count > 1)
                 {
-                    _spriteBatch.DrawString(font, "1. HeadQuarter", textPos1, Color.White);
+                    _spriteBatch.DrawString(font, "1. Bank", textPos1, Color.White);
                     _spriteBatch.DrawString(font, "2. Barack", textPos2, Color.White);
+                    _spriteBatch.DrawString(font, "3. Factory", textPos3, Color.White);
+                    _spriteBatch.DrawString(font, "4. Lab", textPos4, Color.White);
                 }
-                
             }
-            
 
             _spriteBatch.End();
             // TODO: Add your drawing code here
@@ -130,43 +155,61 @@ namespace SpaceRTS
                         {
                             rects.Add(new Rectangle(x * 65, y * 65, 200, 50));
                             rects.Add(new Rectangle(x * 65, y * 65 + 50, 200, 50));
+                            rects.Add(new Rectangle(x * 65, y * 65 + 100, 200, 50));
+                            rects.Add(new Rectangle(x * 65, y * 65 + 150, 200, 50));
 
                             textPos1 = new Vector2(x * 65 + 75, y * 65 + 15);
                             textPos2 = new Vector2(x * 65 + 75, y * 65 + 65);
-                            
+                            textPos3 = new Vector2(x * 65 + 75, y * 65 + 115);
+                            textPos4 = new Vector2(x * 65 + 75, y * 65 + 165);
+
                             DropDownMenu = true;
 
                             Clicked = true;
 
                             buildPos = new Vector2(x * 65, y * 65);
-
                         }
                     }
                 }
             }
-            if (canPlace)
-            {
-                if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D1))
+            if (mouseClick.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Released)
+                if (canPlace)
                 {
-                    Building.Add(new Headquarter(new Vector2(buildPos.X, buildPos.Y)));
-                    rects.Clear();
-                    Clicked = false;
-                    canPlace = false;
+                    if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D1))
+                    {
+                        Building.Add(new Bank(new Vector2(buildPos.X, buildPos.Y)));
+                        rects.Clear();
+                        Clicked = false;
+                        canPlace = false;
+                    }
+                    if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D2))
+                    {
+                        Building.Add(new Barack(new Vector2(buildPos.X, buildPos.Y)));
+                        rects.Clear();
+                        Clicked = false;
+                        canPlace = false;
+                    }
+                    if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D3))
+                    {
+                        Building.Add(new Factory(new Vector2(buildPos.X, buildPos.Y)));
+                        rects.Clear();
+                        Clicked = false;
+                        canPlace = false;
+                    }
+                    if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D4))
+                    {
+                        Building.Add(new Lab(new Vector2(buildPos.X, buildPos.Y)));
+                        rects.Clear();
+                        Clicked = false;
+                        canPlace = false;
+                    }
                 }
-                if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D2))
-                {
-                    Building.Add(new Barack(new Vector2(buildPos.X, buildPos.Y)));
-                    rects.Clear();
-                    Clicked = false;
-                    canPlace = false;
-                }
-            }
 
-            if (rects.Count > 2)
+            if (rects.Count > 4)
             {
-                rects.RemoveRange(2, rects.Count - 2);
+                rects.RemoveRange(4, rects.Count - 4);
             }
-            if(mouseClick.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+            if (mouseClick.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
             {
                 rects.Clear();
                 Clicked = false;
