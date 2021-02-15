@@ -96,18 +96,16 @@ namespace SpaceRTS
             gameObjects.AddRange(miner);
             Building.Clear();
             miner.Clear();
-            buildBuilding();
-            /*
+
             if(!HQPlaced)
             {
                 BuildHQ();
             }
-            
-            if (HQPlaced)
+            if(HQPlaced)
             {
-                
+                buildBuilding();
             }
-            */
+
 
             base.Update(gameTime);
         }
@@ -141,7 +139,7 @@ namespace SpaceRTS
                 }
                 if (rects.Count > 1)
                 {
-                    _spriteBatch.DrawString(font, "1. HG", textPos1, Color.White);
+                    _spriteBatch.DrawString(font, "1. Bank", textPos1, Color.White);
                     _spriteBatch.DrawString(font, "2. Barack", textPos2, Color.White);
                     _spriteBatch.DrawString(font, "3. Factory", textPos3, Color.White);
                     _spriteBatch.DrawString(font, "4. Lab", textPos4, Color.White);
@@ -221,7 +219,7 @@ namespace SpaceRTS
                 {
                     if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D1))
                     {
-                        Building.Add(new Headquarter(new Vector2(buildPos.X, buildPos.Y)));
+                        Building.Add(new Bank(new Vector2(buildPos.X, buildPos.Y)));
                         rects.Clear();
                         Clicked = false;
                         canPlace = false;
