@@ -12,15 +12,18 @@ namespace SpaceRTS
         public int GoldCapasity;
         private float timer;
         private float cooldownTime = 2;
-        public static new Vector2 position;
+        public static Vector2 minePosition;
 
-        public Mine()
+        public Mine(Vector2 position)
         {
-            sprite = GameWorld.sprites["Mine"];
+            this.position = position;
+            color = Color.White;
+            minePosition = position;
         }
 
         public override void LoadContent(ContentManager content)
         {
+            sprite = content.Load<Texture2D>("Mine");
         }
 
         public override void OnCollision(GameObject other)

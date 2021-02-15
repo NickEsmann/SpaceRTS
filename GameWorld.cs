@@ -12,13 +12,15 @@ namespace SpaceRTS
         private SpriteBatch _spriteBatch;
         private Map map;
         private Worker worker;
+        private Mine mine;
+        private List<GameObject> miner;
         private List<GameObject> gameObjects;
         private List<GameObject> Building;
         public static Dictionary<string, Texture2D> sprites = new Dictionary<string, Texture2D>();
         private bool IsClicked = false;
-        bool Clicked = false;
-        Texture2D t;
-        Vector2 currentMousPosition = new Vector2(Cursor.Position.X, Cursor.Position.Y);
+        private bool Clicked = false;
+        private Texture2D t;
+        private Vector2 currentMousPosition = new Vector2(Cursor.Position.X, Cursor.Position.Y);
 
         public GameWorld()
         {
@@ -34,6 +36,12 @@ namespace SpaceRTS
             // TODO: Add your initialization logic here
             map = new Map();
             worker = new Worker();
+            miner = new List<GameObject>();
+            miner.Add(new Mine(new Vector2(150, 100)));
+            miner.Add(new Mine(new Vector2(500, 800)));
+            miner.Add(new Mine(new Vector2(700, 200)));
+            miner.Add(new Mine(new Vector2(1270, 400)));
+            miner.Add(new Mine(new Vector2(1400, 700)));
             gameObjects = new List<GameObject>();
             Building = new List<GameObject>();
             base.Initialize();
@@ -41,6 +49,7 @@ namespace SpaceRTS
 
         protected override void LoadContent()
         {
+            gameObjects.AddRange(miner);
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             foreach (GameObject go in gameObjects)
             {
@@ -50,7 +59,6 @@ namespace SpaceRTS
             t = new Texture2D(GraphicsDevice, 1, 1);
             t.SetData<Color>(new Color[] { Color.White });
             sprites.Add("HQ", Content.Load<Texture2D>("HQ"));
-            sprites.Add("Mine", Content.Load<Texture2D>("Mine"));
             // TODO: use this.Content to load your game content here
         }
 
@@ -65,7 +73,9 @@ namespace SpaceRTS
 
             // TODO: Add your update logic here
             gameObjects.AddRange(Building);
+            gameObjects.AddRange(miner);
             Building.Clear();
+            miner.Clear();
             buildBuilding();
             base.Update(gameTime);
         }
@@ -83,14 +93,14 @@ namespace SpaceRTS
             Rectangle buildOption1 = new Rectangle((int)currentMousPosition.X, (int)currentMousPosition.Y, 200, 50);
             Rectangle buildOption2 = new Rectangle((int)currentMousPosition.X, (int)currentMousPosition.Y + 51, 200, 50);
             Rectangle buildOption3 = new Rectangle((int)currentMousPosition.X, (int)currentMousPosition.Y + 102, 200, 50);
-            
+
             if (IsClicked)
             {
-                _spriteBatch.Draw(t,buildOption1, Color.Black);
+                _spriteBatch.Draw(t, buildOption1, Color.Black);
                 _spriteBatch.Draw(t, buildOption2, Color.Black);
                 _spriteBatch.Draw(t, buildOption3, Color.Black);
             }
-            
+
             _spriteBatch.End();
             // TODO: Add your drawing code here
 
@@ -110,7 +120,6 @@ namespace SpaceRTS
                         Rectangle rect = new Rectangle(x, y, 65, 65);
                         if (new Rectangle(Cursor.Position.X, Cursor.Position.Y, 1, 1).Intersects(new Rectangle(x * 65, y * 65, 65, 65)))
                         {
-                            
                             //IsClicked = true;
                             Building.Add(new Headquarter(new Vector2(x * 65, y * 65)));
                         }
@@ -118,11 +127,10 @@ namespace SpaceRTS
                 }
                 Clicked = true;
             }
-            if(mouseClick.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Released)
+            if (mouseClick.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Released)
             {
                 Clicked = false;
             }
-
         }
     }
 }
