@@ -45,21 +45,22 @@ namespace SpaceRTS
         {
             // TODO: Add your initialization logic here
             map = new Map();
-            worker = new Worker();
+            worker = new Worker(1);
             miner = new List<GameObject>();
-            miner.Add(new Mine(new Vector2(150, 100)));
+            miner.Add(new Mine(new Vector2(300, 100)));
             miner.Add(new Mine(new Vector2(500, 800)));
             miner.Add(new Mine(new Vector2(700, 200)));
             miner.Add(new Mine(new Vector2(1270, 400)));
             miner.Add(new Mine(new Vector2(1400, 700)));
             gameObjects = new List<GameObject>();
             Building = new List<GameObject>();
+            gameObjects.Add(worker);
+            gameObjects.AddRange(miner);
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            gameObjects.AddRange(miner);
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             foreach (GameObject go in gameObjects)
             {
