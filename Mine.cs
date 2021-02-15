@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,6 +14,8 @@ namespace SpaceRTS
         private float timer;
         private float cooldownTime = 2;
         public static new Vector2 position;
+        static Semaphore MySemaphore = new Semaphore(0, 5);
+
 
         public Mine()
         {
@@ -38,6 +41,18 @@ namespace SpaceRTS
             {
                 timer += (float)gametime.ElapsedGameTime.TotalSeconds;
             }
+        }
+
+        static void Main()
+        {
+            for (int i = 1; 1 <= 5; i++)
+            {
+                new Thread(Enter).Start(i);
+            }
+
+            Thread.Sleep(500);
+
+
         }
     }
 }
