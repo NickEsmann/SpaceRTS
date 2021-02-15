@@ -12,12 +12,15 @@ namespace SpaceRTS
         public int Lv;
         private int GoldCapasity;
         private int CurrentGold;
-        private Texture2D Sprite;
         private float timer = 0.0f;
         private float cooldownTime = 2;
+        public static Vector2 positionHG;
 
-        public Headquarter()
+        public Headquarter(Vector2 position)
         {
+            sprite = GameWorld.sprites["HQ"];
+            this.position = position;
+            color = Color.White;
         }
 
         public void AddGold(int Gold)
@@ -26,7 +29,7 @@ namespace SpaceRTS
             {
                 Lv++;
                 CurrentGold = 0;
-                GoldCapasity = GoldCapasity * 2;
+                GoldCapasity *= 2;
             }
             else
                 CurrentGold += Gold;
@@ -34,7 +37,6 @@ namespace SpaceRTS
 
         public override void LoadContent(ContentManager contentManager)
         {
-            Sprite = contentManager.Load<Texture2D>("kenney_rtssci-fi/PNG/Retina/Structure/scifiStructure_07");
         }
 
         public override void Update(GameTime gametime)
@@ -47,12 +49,11 @@ namespace SpaceRTS
 
         public override void OnCollision(GameObject other)
         {
-            /*if (other is Worker && timer > cooldownTime)
+            if (other is Worker && timer > cooldownTime)
             {
-                //AddGold(Worker.Gold);
+                AddGold(Worker.currentGold);
                 timer = 0;
             }
-            */
         }
     }
 }
