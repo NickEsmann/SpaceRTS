@@ -15,6 +15,7 @@ namespace SpaceRTS
         private Thread t;
         private int goldCap = 300;
         public static int currentGold;
+        private int speed = 10;
 
         public Worker(int id)
         {
@@ -41,27 +42,27 @@ namespace SpaceRTS
                 {
                     //Gå til HQ
                     if (position.X < Headquarter.positionHG.X)
-                        position.X += 10;
+                        position.X += speed;
                     else
-                        position.X -= 10;
+                        position.X -= speed;
 
                     if (position.Y < Headquarter.positionHG.Y)
-                        position.Y += 10;
+                        position.Y += speed;
                     else
-                        position.Y -= 10;
+                        position.Y -= speed;
                 }
                 else
                 {
                     //Gå til Mine
                     if (position.X < Mine.minePosition.X)
-                        position.X += 10;
+                        position.X += speed;
                     else
-                        position.X -= 10;
+                        position.X -= speed;
 
                     if (position.Y < Mine.minePosition.Y)
-                        position.Y += 10;
+                        position.Y += speed;
                     else
-                        position.Y -= 10;
+                        position.Y -= speed;
                 }
             }
         }
