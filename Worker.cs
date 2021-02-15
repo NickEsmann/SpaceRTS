@@ -10,18 +10,24 @@ namespace SpaceRTS
 {
     internal class Worker : GameObject
     {
+        private bool isDead = false;
         private int id;
         private Thread t;
         private int goldCap = 300;
         public static int currentGold;
+        private float speed = 10;
+        private float timer;
+        private float coolDown = 50;
+        private int stamina = 100;
         private int lifeEnergy;
-        private bool isDead = false;
+        private float deltatime;
+        private Vector2 velocity;
 
         public Worker(int id)
         {
-            this.lifeEnergy = 10;
             this.id = id;
-            t = new Thread(new ThreadStart(LifeEnergy));
+            t = new Thread(new ThreadStart(Work));
+
             t.Start();
             color = Color.White;
         }
@@ -52,38 +58,55 @@ namespace SpaceRTS
 
         public void Work()
         {
-           
+            while (!isDead)
+            {
                 if (currentGold <= goldCap)
                 {
                     //Gå til HQ
                     if (position.X < Headquarter.positionHG.X)
-                        position.X += 10;
+                        position.X += speed;
                     else
-                        position.X -= 10;
+                        position.X -= speed;
 
                     if (position.Y < Headquarter.positionHG.Y)
-                        position.Y += 10;
+                        position.Y += speed;
                     else
-                        position.Y -= 10;
+                        position.Y -= speed;
                 }
                 else
-                //Gå til Mine
-                if (position.X < Mine.minePosition.X)
-                    position.X += 10;
-                else
-                    position.X -= 10;
+                {
+                    //Gå til Mine
+                    if (position.X < Mine.minePosition.X)
+                        position.X += speed;
+                    else
+                        position.X -= speed;
 
-                if (position.Y < Mine.minePosition.Y)
-                    position.Y += 10;
-                else
-                    position.Y -= 10;
-            
-
+                    if (position.Y < Mine.minePosition.Y)
+                        position.Y += speed;
+                    else
+                        position.Y -= speed;
+                }
+            }
         }
 
         public override void Update(GameTime gameTime)
         {
-            Work();
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (timer < coolDown + 1)
+            {
+                timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+
+            if (timer > coolDown)
+            {
+                stamina--;
+            }
+
+            if (stamina <= 0)
+            {
+                isDead = true;
+            }
         }
     }
 }
