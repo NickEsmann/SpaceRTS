@@ -10,6 +10,7 @@ namespace SpaceRTS
     internal class Headquarter : GameObject
     {
         public int Lv = 0;
+        private int CurrentLv;
         private int GoldCapasity = 1000;
         private int CurrentGold;
         private float timer = 0.0f;
@@ -45,6 +46,9 @@ namespace SpaceRTS
             if (timer < cooldownTime + 1)
             {
                 timer += (float)gametime.ElapsedGameTime.TotalSeconds;
+            }
+            if (Lv < CurrentLv)
+            {
             }
         }
 
