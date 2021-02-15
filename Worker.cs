@@ -20,8 +20,7 @@ namespace SpaceRTS
         private float coolDown = 50;
         private int stamina = 100;
         private int lifeEnergy;
-        private float deltatime;
-        private Vector2 velocity;
+        private Vector2 chaseLine;
 
         public Worker(int id)
         {
@@ -30,6 +29,7 @@ namespace SpaceRTS
 
             t.Start();
             color = Color.White;
+            position = new Vector2(20, 20);
         }
 
         public override void LoadContent(ContentManager content)
@@ -60,38 +60,42 @@ namespace SpaceRTS
         {
             while (!isDead)
             {
-                if (currentGold <= goldCap)
-                {
-                    //Gå til HQ
-                    if (position.X < Headquarter.positionHG.X)
-                        position.X += speed;
-                    else
-                        position.X -= speed;
+                chaseLine = Headquarter.positionHG - position;
+                chaseLine.Normalize();
 
-                    if (position.Y < Headquarter.positionHG.Y)
-                        position.Y += speed;
-                    else
-                        position.Y -= speed;
-                }
-                else
-                {
-                    //Gå til Mine
-                    if (position.X < Mine.minePosition.X)
-                        position.X += speed;
-                    else
-                        position.X -= speed;
+                //if (currentGold <= goldCap)
+                //{
+                //    //Gå til HQ
+                //    if (position.X < Headquarter.positionHG.X)
+                //        position.X += speed;
+                //    else
+                //        position.X -= speed;
 
-                    if (position.Y < Mine.minePosition.Y)
-                        position.Y += speed;
-                    else
-                        position.Y -= speed;
-                }
+                //    if (position.Y < Headquarter.positionHG.Y)
+                //        position.Y += speed;
+                //    else
+                //        position.Y -= speed;
+                //}
+                //else
+                //{
+                //    //Gå til Mine
+                //    if (position.X < Mine.minePosition.X)
+                //        position.X += speed;
+                //    else
+                //        position.X -= speed;
+
+                //    if (position.Y < Mine.minePosition.Y)
+                //        position.Y += speed;
+                //    else
+                //        position.Y -= speed;
+                //}
             }
         }
 
         public override void Update(GameTime gameTime)
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            position += chaseLine * speed * deltaTime;
 
             if (timer < coolDown + 1)
             {
@@ -101,6 +105,7 @@ namespace SpaceRTS
             if (timer > coolDown)
             {
                 stamina--;
+                timer = 0;
             }
 
             if (stamina <= 0)
