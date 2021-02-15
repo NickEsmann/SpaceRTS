@@ -16,19 +16,21 @@ namespace SpaceRTS
         public static Vector2 minePosition;
 
         //private static Semaphore MySemaphore = new Semaphore(0, 5);
-        public static new Vector2 position;
-
         private static Semaphore MySemaphore = new Semaphore(0, 5);
+
         private Thread MineThread;
 
-        public Mine()
+        public Mine(Vector2 position)
         {
-            sprite = GameWorld.sprites["Mine"];
-            MineThread.IsBackground = true;
+            this.position = position;
+            //MineThread.IsBackground = true;
+            minePosition = position;
+            color = Color.White;
         }
 
         public override void LoadContent(ContentManager content)
         {
+            sprite = content.Load<Texture2D>("Mine");
         }
 
         public override void OnCollision(GameObject other)

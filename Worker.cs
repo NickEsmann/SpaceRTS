@@ -10,6 +10,7 @@ namespace SpaceRTS
 {
     internal class Worker : GameObject
     {
+        private bool isDead = false;
         private int id;
         private Thread t;
         private int goldCap = 300;
@@ -34,35 +35,39 @@ namespace SpaceRTS
 
         public void Work()
         {
-            if (currentGold <= goldCap)
+            while (!isDead)
             {
-                //Gå til HQ
-                if (position.X < Headquarter.positionHG.X)
-                    position.X += 10;
-                else
-                    position.X -= 10;
+                if (currentGold <= goldCap)
+                {
+                    //Gå til HQ
+                    if (position.X < Headquarter.positionHG.X)
+                        position.X += 10;
+                    else
+                        position.X -= 10;
 
-                if (position.Y < Headquarter.positionHG.Y)
-                    position.Y += 10;
+                    if (position.Y < Headquarter.positionHG.Y)
+                        position.Y += 10;
+                    else
+                        position.Y -= 10;
+                }
                 else
-                    position.Y -= 10;
+                {
+                    //Gå til Mine
+                    if (position.X < Mine.minePosition.X)
+                        position.X += 10;
+                    else
+                        position.X -= 10;
+
+                    if (position.Y < Mine.minePosition.Y)
+                        position.Y += 10;
+                    else
+                        position.Y -= 10;
+                }
             }
-            else
-            //Gå til Mine
-            if (position.X < Mine.minePosition.X)
-                position.X += 10;
-            else
-                position.X -= 10;
-
-            if (position.Y < Mine.minePosition.Y)
-                position.Y += 10;
-            else
-                position.Y -= 10;
         }
 
         public override void Update(GameTime gameTime)
         {
-            Work();
         }
     }
 }
