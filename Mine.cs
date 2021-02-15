@@ -44,7 +44,7 @@ namespace SpaceRTS
                 timer += (float)gametime.ElapsedGameTime.TotalSeconds;
             }
         }
-        
+        /*
         private static void Main()
         {
             for (int i = 1; 1 <= 5; i++)
@@ -54,5 +54,6 @@ namespace SpaceRTS
 
             Thread.Sleep(500);
         }   
+        */
     }
 }

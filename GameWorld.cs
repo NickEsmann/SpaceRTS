@@ -27,6 +27,8 @@ namespace SpaceRTS
         private SpriteFont font;
         private Vector2 textPos1;
         private Vector2 textPos2;
+        private Vector2 textPos3;
+        private Vector2 textPos4;
         private bool canPlace;
         private Vector2 buildPos;
 
@@ -68,6 +70,9 @@ namespace SpaceRTS
             t.SetData<Color>(new Color[] { Color.White });
             sprites.Add("HQ", Content.Load<Texture2D>("HQ"));
             sprites.Add("Barack", Content.Load<Texture2D>("Barack"));
+            sprites.Add("Bank", Content.Load<Texture2D>("Bank"));
+            sprites.Add("Factory", Content.Load<Texture2D>("Factory"));
+            sprites.Add("Lab", Content.Load<Texture2D>("Lab"));
             font = Content.Load<SpriteFont>("font");
             // TODO: use this.Content to load your game content here
         }
@@ -119,8 +124,10 @@ namespace SpaceRTS
                 }
                 if (rects.Count > 1)
                 {
-                    _spriteBatch.DrawString(font, "1. HeadQuarter", textPos1, Color.White);
+                    _spriteBatch.DrawString(font, "1. Bank", textPos1, Color.White);
                     _spriteBatch.DrawString(font, "2. Barack", textPos2, Color.White);
+                    _spriteBatch.DrawString(font, "3. Factory", textPos3, Color.White);
+                    _spriteBatch.DrawString(font, "4. Lab", textPos4, Color.White);
                 }
             }
 
@@ -148,9 +155,13 @@ namespace SpaceRTS
                         {
                             rects.Add(new Rectangle(x * 65, y * 65, 200, 50));
                             rects.Add(new Rectangle(x * 65, y * 65 + 50, 200, 50));
+                            rects.Add(new Rectangle(x * 65, y * 65 + 100, 200, 50));
+                            rects.Add(new Rectangle(x * 65, y * 65 + 150, 200, 50));
 
                             textPos1 = new Vector2(x * 65 + 75, y * 65 + 15);
                             textPos2 = new Vector2(x * 65 + 75, y * 65 + 65);
+                            textPos3 = new Vector2(x * 65 + 75, y * 65 + 115);
+                            textPos4 = new Vector2(x * 65 + 75, y * 65 + 165);
 
                             DropDownMenu = true;
 
@@ -166,7 +177,7 @@ namespace SpaceRTS
                 {
                     if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D1))
                     {
-                        Building.Add(new Headquarter(new Vector2(buildPos.X, buildPos.Y)));
+                        Building.Add(new Bank(new Vector2(buildPos.X, buildPos.Y)));
                         rects.Clear();
                         Clicked = false;
                         canPlace = false;
@@ -178,11 +189,25 @@ namespace SpaceRTS
                         Clicked = false;
                         canPlace = false;
                     }
+                    if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D3))
+                    {
+                        Building.Add(new Factory(new Vector2(buildPos.X, buildPos.Y)));
+                        rects.Clear();
+                        Clicked = false;
+                        canPlace = false;
+                    }
+                    if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D4))
+                    {
+                        Building.Add(new Lab(new Vector2(buildPos.X, buildPos.Y)));
+                        rects.Clear();
+                        Clicked = false;
+                        canPlace = false;
+                    }
                 }
 
-            if (rects.Count > 2)
+            if (rects.Count > 4)
             {
-                rects.RemoveRange(2, rects.Count - 2);
+                rects.RemoveRange(4, rects.Count - 4);
             }
             if (mouseClick.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
             {
