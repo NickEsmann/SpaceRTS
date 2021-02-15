@@ -14,18 +14,21 @@ namespace SpaceRTS
         private float timer;
         private float cooldownTime = 100;
         public static Vector2 minePosition;
-        //private static Semaphore MySemaphore = new Semaphore(0, 5);
 
-        public Mine(Vector2 position)
+        //private static Semaphore MySemaphore = new Semaphore(0, 5);
+        public static new Vector2 position;
+
+        private static Semaphore MySemaphore = new Semaphore(0, 5);
+        private Thread MineThread;
+
+        public Mine()
         {
-            this.position = position;
-            color = Color.White;
-            minePosition = position;
+            sprite = GameWorld.sprites["Mine"];
+            MineThread.IsBackground = true;
         }
 
         public override void LoadContent(ContentManager content)
         {
-            sprite = content.Load<Texture2D>("Mine");
         }
 
         public override void OnCollision(GameObject other)
@@ -47,6 +50,7 @@ namespace SpaceRTS
 
         /*
         private static void Working()
+        static void Workline()
         {
             for (int i = 1; 1 <= 5; i++)
             {
@@ -54,6 +58,15 @@ namespace SpaceRTS
             }
 
             //Thread.Sleep(500);
+            Thread.Sleep(500);
+            MySemaphore.Release(5);
+        }
+
+        static void Enter(object Worker)
+        {
+            MySemaphore.WaitOne();
+            Thread.Sleep(1000 * (int)Worker);
+            MySemaphore.Release();
         }
         */
     }
