@@ -24,7 +24,6 @@ namespace SpaceRTS
         SpriteFont font;
         Vector2 textPos1;
         Vector2 textPos2;
-        Vector2 textPos3;
         bool canPlace;
         Vector2 buildPos;
 
@@ -58,6 +57,7 @@ namespace SpaceRTS
             t = new Texture2D(GraphicsDevice, 1, 1);
             t.SetData<Color>(new Color[] { Color.White });
             sprites.Add("HQ", Content.Load<Texture2D>("HQ"));
+            sprites.Add("Barack", Content.Load<Texture2D>("Barack"));
             sprites.Add("Mine", Content.Load<Texture2D>("Mine"));
             font = Content.Load<SpriteFont>("font");
             // TODO: use this.Content to load your game content here
@@ -76,8 +76,6 @@ namespace SpaceRTS
             gameObjects.AddRange(Building);
             Building.Clear();
             buildBuilding();
-
-            Debug.WriteLine(canPlace);
             base.Update(gameTime);
         }
 
@@ -102,8 +100,7 @@ namespace SpaceRTS
                 if(rects.Count > 1)
                 {
                     _spriteBatch.DrawString(font, "1. HeadQuarter", textPos1, Color.White);
-                    _spriteBatch.DrawString(font, "2. Mine", textPos2, Color.White);
-                    _spriteBatch.DrawString(font, "3. Barack", textPos3, Color.White);
+                    _spriteBatch.DrawString(font, "2. Barack", textPos2, Color.White);
                 }
                 
             }
@@ -133,11 +130,9 @@ namespace SpaceRTS
                         {
                             rects.Add(new Rectangle(x * 65, y * 65, 200, 50));
                             rects.Add(new Rectangle(x * 65, y * 65 + 50, 200, 50));
-                            rects.Add(new Rectangle(x * 65, y * 65 + 100, 200, 50));
 
                             textPos1 = new Vector2(x * 65 + 75, y * 65 + 15);
                             textPos2 = new Vector2(x * 65 + 75, y * 65 + 65);
-                            textPos3 = new Vector2(x * 65 + 75, y * 65 + 115);
                             
                             DropDownMenu = true;
 
@@ -156,24 +151,20 @@ namespace SpaceRTS
                     Building.Add(new Headquarter(new Vector2(buildPos.X, buildPos.Y)));
                     rects.Clear();
                     Clicked = false;
+                    canPlace = false;
                 }
                 if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D2))
                 {
-                    //Building.Add(new Headquarter(new Vector2(buildPos.X, buildPos.Y)));
+                    Building.Add(new Barack(new Vector2(buildPos.X, buildPos.Y)));
                     rects.Clear();
                     Clicked = false;
-                }
-                if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D3))
-                {
-                    //Building.Add(new Headquarter(new Vector2(buildPos.X, buildPos.Y)));
-                    rects.Clear();
-                    Clicked = false;
+                    canPlace = false;
                 }
             }
 
-            if (rects.Count > 3)
+            if (rects.Count > 2)
             {
-                rects.RemoveRange(3, rects.Count - 3);
+                rects.RemoveRange(2, rects.Count - 2);
             }
             if(mouseClick.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
             {
