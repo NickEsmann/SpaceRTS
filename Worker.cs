@@ -10,17 +10,18 @@ namespace SpaceRTS
 {
     internal class Worker : GameObject
     {
-        private bool isDead = false;
         private int id;
         private Thread t;
         private int goldCap = 300;
         public static int currentGold;
-        private int speed = 10;
+        private int lifeEnergy;
+        private bool isDead = false;
 
         public Worker(int id)
         {
+            this.lifeEnergy = 10;
             this.id = id;
-            t = new Thread(new ThreadStart(Work));
+            t = new Thread(new ThreadStart(LifeEnergy));
             t.Start();
             color = Color.White;
         }
@@ -34,41 +35,55 @@ namespace SpaceRTS
         {
         }
 
-        public void Work()
+        private void LifeEnergy()
         {
-            while (!isDead)
+            if (currentGold <= goldCap)
             {
-                if (currentGold <= goldCap)
+                if (lifeEnergy >= 0)
                 {
-                    //Gå til HQ
-                    if (position.X < Headquarter.positionHG.X)
-                        position.X += speed;
-                    else
-                        position.X -= speed;
-
-                    if (position.Y < Headquarter.positionHG.Y)
-                        position.Y += speed;
-                    else
-                        position.Y -= speed;
+                    lifeEnergy -= 1;
                 }
                 else
                 {
-                    //Gå til Mine
-                    if (position.X < Mine.minePosition.X)
-                        position.X += speed;
-                    else
-                        position.X -= speed;
-
-                    if (position.Y < Mine.minePosition.Y)
-                        position.Y += speed;
-                    else
-                        position.Y -= speed;
+                    isDead = false;
                 }
             }
         }
 
+        public void Work()
+        {
+           
+                if (currentGold <= goldCap)
+                {
+                    //Gå til HQ
+                    if (position.X < Headquarter.positionHG.X)
+                        position.X += 10;
+                    else
+                        position.X -= 10;
+
+                    if (position.Y < Headquarter.positionHG.Y)
+                        position.Y += 10;
+                    else
+                        position.Y -= 10;
+                }
+                else
+                //Gå til Mine
+                if (position.X < Mine.minePosition.X)
+                    position.X += 10;
+                else
+                    position.X -= 10;
+
+                if (position.Y < Mine.minePosition.Y)
+                    position.Y += 10;
+                else
+                    position.Y -= 10;
+            
+
+        }
+
         public override void Update(GameTime gameTime)
         {
+            Work();
         }
     }
 }
