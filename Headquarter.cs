@@ -9,11 +9,11 @@ namespace SpaceRTS
 {
     internal class Headquarter : GameObject
     {
-        public int Lv;
-        private int GoldCapasity;
+        public int Lv = 0;
+        private int GoldCapasity = 1000;
         private int CurrentGold;
         private float timer = 0.0f;
-        private float cooldownTime = 2;
+        private float cooldownTime = 50;
         public static Vector2 positionHG;
 
         public Headquarter(Vector2 position)
@@ -21,6 +21,7 @@ namespace SpaceRTS
             sprite = GameWorld.sprites["HQ"];
             this.position = position;
             color = Color.White;
+            positionHG = position;
         }
 
         public void AddGold(int Gold)

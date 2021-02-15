@@ -10,12 +10,11 @@ namespace SpaceRTS
 {
     internal class Mine : GameObject
     {
-        public int GoldCapasity;
+        public int GoldCapasity = 1000;
         private float timer;
-        private float cooldownTime = 2;
+        private float cooldownTime = 100;
         public static Vector2 minePosition;
-        public static new Vector2 position;
-        private static Semaphore MySemaphore = new Semaphore(0, 5);
+        //private static Semaphore MySemaphore = new Semaphore(0, 5);
 
         public Mine(Vector2 position)
         {
@@ -46,14 +45,16 @@ namespace SpaceRTS
             }
         }
 
-        private static void Main()
+        /*
+        private static void Working()
         {
             for (int i = 1; 1 <= 5; i++)
             {
-                new Thread(Enter).Start(i);
+                //new Thread(Enter).Start(i);
             }
 
-            Thread.Sleep(500);
+            //Thread.Sleep(500);
         }
+        */
     }
 }
