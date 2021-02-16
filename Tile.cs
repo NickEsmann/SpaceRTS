@@ -17,6 +17,7 @@ namespace SpaceRTS
         {
             position = new Vector2(x * tileSize, y * tileSize);
             color = Color.White;
+            scale = new Vector2(1, 1);
         }
 
         public override void LoadContent(ContentManager content)

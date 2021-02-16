@@ -16,11 +16,11 @@ namespace SpaceRTS
         private float timer;
         private float cooldownTime = 100;
         public static Vector2 minePosition;
+        private int scaleCount = 0;
 
-        //private static Semaphore MySemaphore = new Semaphore(0, 5);
         private static Semaphore MySemaphore = new Semaphore(0, 5);
 
-        private Thread MineThread;
+        //private Thread MineThread;
 
         public Mine(Vector2 position)
         {
@@ -29,6 +29,7 @@ namespace SpaceRTS
             minePosition = position;
             color = Color.White;
             currentGold = GoldCapasity;
+            scale = new Vector2(1, 1);
         }
 
         public override void LoadContent(ContentManager content)
@@ -46,28 +47,43 @@ namespace SpaceRTS
             {
                 timer += (float)gametime.ElapsedGameTime.TotalSeconds;
             }
-        }
 
-        /*
-        private static void Working()
-        static void Workline()
-        {
-            for (int i = 1; 1 <= 5; i++)
+            if (GameWorld.HGClicked == true && scaleCount < 50)
             {
-                //new Thread(Enter).Start(i);
+                scaleCount++;
+                scale = new Vector2(1.2f, 1.2f);
             }
-
-            //Thread.Sleep(500);
-            Thread.Sleep(500);
-            MySemaphore.Release(5);
+            if (scaleCount >= 50)
+            {
+                scale = new Vector2(1, 1);
+                scaleCount++;
+            }
+            if (scaleCount == 100)
+            {
+                scaleCount = 0;
+            }
+            if (GameWorld.HGClicked == false)
+            {
+                scale = new Vector2(1, 1);
+            }
         }
 
-        static void Enter(object Worker)
-        {
-            MySemaphore.WaitOne();
-            Thread.Sleep(1000 * (int)Worker);
-            MySemaphore.Release();
-        }
-        */
+        //    public static void Workline()
+        //    {
+        //        for (int i = 1; 1 <= 5; i++)
+        //        {
+        //            new Thread(Enter).Start(i);
+        //        }
+
+        //        Thread.Sleep(500);
+        //        MySemaphore.Release(5);
+        //    }
+
+        //    static void Enter(object Worker)
+        //    {
+        //        MySemaphore.WaitOne();
+        //        Thread.Sleep(1000 * (int)Worker);
+        //        MySemaphore.Release();
+        //    }
     }
 }

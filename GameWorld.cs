@@ -35,6 +35,8 @@ namespace SpaceRTS
         private Vector2 HGText;
         private SpriteFont headLine;
         public static List<GameObject> deleteObjects;
+        public static bool HGClicked = false;
+        private Vector2 HGPosition;
 
         public GameWorld()
         {
@@ -188,6 +190,7 @@ namespace SpaceRTS
                         if (new Rectangle(Cursor.Position.X, Cursor.Position.Y, 1, 1).Intersects(new Rectangle(x * 65, y * 65, 65, 65)))
                         {
                             Building.Add(new Headquarter(new Vector2(x * 65, y * 65)));
+                            HGPosition = new Vector2(x * 65, y * 65);
                             HQPlaced = true;
                         }
                     }
@@ -261,6 +264,7 @@ namespace SpaceRTS
                         Clicked = false;
                         canPlace = false;
                     }
+                    HGClicked = false;
                 }
 
             if (rects.Count > 4)
@@ -269,6 +273,10 @@ namespace SpaceRTS
             }
             if (mouseClick.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
             {
+                if (new Rectangle(Cursor.Position.X, Cursor.Position.Y, 1, 1).Intersects(new Rectangle((int)HGPosition.X, (int)HGPosition.Y, 65, 65)))
+                {
+                    HGClicked = true;
+                }
                 rects.Clear();
                 Clicked = false;
                 canPlace = false;
