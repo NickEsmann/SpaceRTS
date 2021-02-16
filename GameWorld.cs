@@ -171,7 +171,7 @@ namespace SpaceRTS
             base.Draw(gameTime);
         }
 
-        public void Destroy(GameObject go)
+        public static void Destroy(GameObject go)
         {
             deleteObjects.Add(go);
         }
@@ -202,8 +202,6 @@ namespace SpaceRTS
         {
             MouseState mouseClick = Mouse.GetState();
             KeyboardState keyState = Keyboard.GetState();
-
-            
 
             if (mouseClick.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed && Clicked == false)
             {

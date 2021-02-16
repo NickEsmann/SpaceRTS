@@ -11,7 +11,6 @@ namespace SpaceRTS
     internal class Worker : GameObject
     {
         private int GoldCapasity = 1000;
-        private GameWorld gameworld;
         private bool isDead = false;
         private int id;
         private Thread t;
@@ -41,7 +40,6 @@ namespace SpaceRTS
         public override void LoadContent(ContentManager content)
         {
             sprite = content.Load<Texture2D>("Worker");
-            gameworld = new GameWorld();
         }
 
         public override void OnCollision(GameObject other)
@@ -50,7 +48,7 @@ namespace SpaceRTS
             {
                 if (Headquarter.GoldCapasity <= 0)
                 {
-                    gameworld.Destroy(this);
+                    GameWorld.Destroy(this);
                 }
                 Headquarter.CurrentGold += currentGold;
                 currentGold = 0;
@@ -61,7 +59,7 @@ namespace SpaceRTS
             {
                 if (Mine.GoldCapasity <= 0)
                 {
-                    gameworld.Destroy(this);
+                    GameWorld.Destroy(this);
                 }
                 Mine.currentGold -= GoldCapasity;
                 currentGold = GoldCapasity;
@@ -121,7 +119,7 @@ namespace SpaceRTS
             if (stamina <= 0)
             {
                 isDead = true;
-                gameworld.Destroy(this);
+                GameWorld.Destroy(this);
             }
         }
     }
