@@ -37,6 +37,7 @@ namespace SpaceRTS
         public static List<GameObject> deleteObjects;
         public static bool HGClicked = false;
         private Vector2 HGPosition;
+        private Texture2D collisionTexture;
 
         public GameWorld()
         {
@@ -54,10 +55,10 @@ namespace SpaceRTS
             worker = new Worker(1);
             miner = new List<GameObject>();
             deleteObjects = new List<GameObject>();
-            miner.Add(new Mine(new Vector2(300, 100)));
-            miner.Add(new Mine(new Vector2(500, 800)));
-            miner.Add(new Mine(new Vector2(700, 200)));
-            miner.Add(new Mine(new Vector2(1270, 400)));
+            //miner.Add(new Mine(new Vector2(300, 100)));
+            //miner.Add(new Mine(new Vector2(500, 800)));
+            //miner.Add(new Mine(new Vector2(700, 200)));
+            //miner.Add(new Mine(new Vector2(1270, 400)));
             miner.Add(new Mine(new Vector2(1400, 700)));
             gameObjects = new List<GameObject>();
             Building = new List<GameObject>();
@@ -74,6 +75,7 @@ namespace SpaceRTS
                 go.LoadContent(this.Content);
             }
             map.LoadContent(Content);
+            collisionTexture = Content.Load<Texture2D>("Pixel");
             t = new Texture2D(GraphicsDevice, 1, 1);
             t.SetData<Color>(new Color[] { Color.White });
             sprites.Add("HQ", Content.Load<Texture2D>("HQ"));
@@ -91,6 +93,7 @@ namespace SpaceRTS
             foreach (GameObject gob in gameObjects)
             {
                 gob.Update(gameTime);
+                worker.CheckCollision(gob);
             }
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
                 Exit();
@@ -112,7 +115,6 @@ namespace SpaceRTS
 
             foreach (var item in gameObjects)
             {
-                item.CheckCollision(item);
                 foreach (var go in deleteObjects)
                 {
                     gameObjects.Remove(go);
@@ -133,6 +135,7 @@ namespace SpaceRTS
             foreach (GameObject go in gameObjects)
             {
                 go.Draw(_spriteBatch);
+                DrawCollisionBox(go);
             }
 
             Rectangle buildOption1 = new Rectangle((int)currentMousPosition.X, (int)currentMousPosition.Y, 200, 50);
@@ -169,6 +172,22 @@ namespace SpaceRTS
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
+        }
+
+        private void DrawCollisionBox(GameObject go)
+        {
+#if DEBUG
+            //Der laves en streg med tykkelsen 1 for hver side af Collision.
+            Rectangle topLine = new Rectangle(go.Collision.X, go.Collision.Y, go.Collision.Width, 1);
+            Rectangle bottomLine = new Rectangle(go.Collision.X, go.Collision.Y + go.Collision.Height, go.Collision.Width, 1);
+            Rectangle rightLine = new Rectangle(go.Collision.X + go.Collision.Width, go.Collision.Y, 1, go.Collision.Height);
+            Rectangle leftLine = new Rectangle(go.Collision.X, go.Collision.Y, 1, go.Collision.Height);
+            //Der tegnes en streg med tykkelsen 1 for hver side af Collision med collsionTexture med farven rød.
+            _spriteBatch.Draw(collisionTexture, topLine, Color.Red);
+            _spriteBatch.Draw(collisionTexture, bottomLine, Color.Red);
+            _spriteBatch.Draw(collisionTexture, rightLine, Color.Red);
+            _spriteBatch.Draw(collisionTexture, leftLine, Color.Red);
+#endif
         }
 
         public void Destroy(GameObject go)

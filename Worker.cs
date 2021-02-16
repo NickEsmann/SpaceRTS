@@ -10,20 +10,21 @@ namespace SpaceRTS
 {
     internal class Worker : GameObject
     {
-        private int GoldCapasity = 1000;
         private GameWorld gameworld;
         private bool isDead = false;
-        private int id;
+        public int id;
         private Thread t;
         private int goldCap;
         public static int currentGold;
-        private float speed = 10;
+        private float speed = 1;
         private float timer;
-        private float coolDown = 1;
+        private float coolDown = 100;
         private int stamina = 100;
         private Vector2 chaseLine;
         private float deltaTime;
         private float cooldownTime = 50;
+        private bool working = false;
+        private bool sleeping = false;
 
         public Worker(int id)
         {
@@ -34,7 +35,7 @@ namespace SpaceRTS
             t.IsBackground = true;
             t.Start();
             color = Color.White;
-            position = new Vector2(20, 20);
+            position = new Vector2(500, 500);
             scale = new Vector2(1, 1);
         }
 
@@ -46,73 +47,72 @@ namespace SpaceRTS
 
         public override void OnCollision(GameObject other)
         {
-            if (other is Headquarter && timer > cooldownTime)
+            if (other is Headquarter)
             {
-                if (Headquarter.GoldCapasity <= 0)
-                {
-                    gameworld.Destroy(this);
-                }
-                Headquarter.CurrentGold += currentGold;
-                currentGold = 0;
-                timer = 0;
+                sleeping = true;
             }
 
-            if (other is Mine && timer > cooldownTime)
+            if (other is Mine)
             {
-                if (Mine.GoldCapasity <= 0)
-                {
-                    gameworld.Destroy(this);
-                }
-                Mine.currentGold -= GoldCapasity;
-                currentGold = GoldCapasity;
-                timer = 0;
+                working = true;
             }
         }
-
-        //public void AddGold(int Gold)
-        //{
-        //    if (CurrentGold <= GoldCapasity)
-        //    {
-        //        Lv++;
-        //        CurrentGold = 0;
-        //        GoldCapasity *= 2;
-        //    }
-        //    else
-        //        CurrentGold += Gold;
-        //}
 
         public void Work()
         {
             while (!isDead)
             {
-                Thread.Sleep(1000);
+                if (working)
+                {
+                    Mine.currentGold -= goldCap;
+                    currentGold = goldCap;
+
+                    Thread.Sleep(1000);
+                    working = false;
+                }
+                if (sleeping)
+                {
+                    Headquarter.CurrentGold += currentGold;
+                    currentGold = 0;
+
+                    Thread.Sleep(1000);
+                    sleeping = false;
+                }
             }
         }
 
         public override void Update(GameTime gameTime)
         {
             deltaTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (currentGold! <= goldCap)
+            if (currentGold >= goldCap)
             {
-                //Gå til Mine
-                chaseLine = Mine.minePosition - position;
-                chaseLine.Normalize();
+                //Gå til HQ
+                if (position != new Vector2(200, 200))
+                {
+                    chaseLine = new Vector2(200, 200) - position;
+                    chaseLine.Normalize();
+                    position += chaseLine * speed * deltaTime;
+                }
             }
             else
             {
-                //Gå til HQ
-                chaseLine = Headquarter.positionHG - position;
-                chaseLine.Normalize();
+                //Gå til Mine
+                if (Mine.minePosition != position)
+                {
+                    chaseLine = Mine.minePosition - position;
+                    chaseLine.Normalize();
+                    position += chaseLine * speed * deltaTime;
+                }
             }
+            if (!working)
+                position += chaseLine * speed * deltaTime;
 
-            position += chaseLine * speed * deltaTime;
-
-            if (timer < coolDown + 1)
+            if (timer < cooldownTime + 10)
             {
                 timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
 
-            if (timer > coolDown)
+            if (timer > cooldownTime)
             {
                 stamina--;
                 timer = 0;
