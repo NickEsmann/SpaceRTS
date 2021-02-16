@@ -13,6 +13,7 @@ namespace SpaceRTS
         protected Vector2 position;
         protected Color color;
         protected Vector2 origin;
+        protected Vector2 scale;
         protected float rotation;
         protected int offsetX;
         protected int offsetY;
@@ -40,7 +41,7 @@ namespace SpaceRTS
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(sprite, position, null, color, 0f, Vector2.Zero, 1, SpriteEffects.None, 1);
+            spriteBatch.Draw(sprite, position, null, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 1);
         }
 
         public abstract void OnCollision(GameObject other);

@@ -30,6 +30,7 @@ namespace SpaceRTS
             t.Start();
             color = Color.White;
             position = new Vector2(20, 20);
+            scale = new Vector2(1, 1);
         }
 
         public override void LoadContent(ContentManager content)
