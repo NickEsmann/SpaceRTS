@@ -34,6 +34,7 @@ namespace SpaceRTS
         private bool HQPlaced = false;
         private Vector2 HGText;
         private SpriteFont headLine;
+        public static List<GameObject> deleteObjects;
 
         public GameWorld()
         {
@@ -50,6 +51,7 @@ namespace SpaceRTS
             map = new Map();
             worker = new Worker(1);
             miner = new List<GameObject>();
+            deleteObjects = new List<GameObject>();
             miner.Add(new Mine(new Vector2(300, 100)));
             miner.Add(new Mine(new Vector2(500, 800)));
             miner.Add(new Mine(new Vector2(700, 200)));
@@ -84,9 +86,9 @@ namespace SpaceRTS
 
         protected override void Update(GameTime gameTime)
         {
-            foreach (GameObject go in gameObjects)
+            foreach (GameObject gob in gameObjects)
             {
-                go.Update(gameTime);
+                gob.Update(gameTime);
             }
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
                 Exit();
@@ -97,15 +99,26 @@ namespace SpaceRTS
             Building.Clear();
             miner.Clear();
 
-            if(!HQPlaced)
+            if (!HQPlaced)
             {
                 BuildHQ();
             }
-            if(HQPlaced)
+            if (HQPlaced)
             {
                 buildBuilding();
             }
 
+            foreach (var item in gameObjects)
+            {
+                item.CheckCollision(item);
+                foreach (var go in deleteObjects)
+                {
+                    gameObjects.Remove(go);
+                }
+            }
+
+            //Listen rydes.
+            deleteObjects.Clear();
 
             base.Update(gameTime);
         }
@@ -145,7 +158,7 @@ namespace SpaceRTS
                     _spriteBatch.DrawString(font, "4. Lab", textPos4, Color.White);
                 }
             }
-            if(!HQPlaced)
+            if (!HQPlaced)
             {
                 _spriteBatch.DrawString(headLine, "Press mouse 1 to place your HQ where you desire", HGText, Color.Blue);
             }
@@ -156,11 +169,16 @@ namespace SpaceRTS
             base.Draw(gameTime);
         }
 
+        public void Destroy(GameObject go)
+        {
+            deleteObjects.Add(go);
+        }
+
         private void BuildHQ()
         {
             HGText = new Vector2(600, 75);
             MouseState mouseHQClick = Mouse.GetState();
-            if(mouseHQClick.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+            if (mouseHQClick.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
             {
                 for (int x = 0; x < 30; x++)
                 {
@@ -172,10 +190,8 @@ namespace SpaceRTS
                             Building.Add(new Headquarter(new Vector2(x * 65, y * 65)));
                             HQPlaced = true;
                         }
-                        
                     }
                 }
-                        
             }
         }
 

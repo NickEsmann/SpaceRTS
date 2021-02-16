@@ -10,7 +10,9 @@ namespace SpaceRTS
 {
     internal class Mine : GameObject
     {
-        public int GoldCapasity = 1000;
+        private GameWorld gameworld;
+        public static int GoldCapasity = 1000;
+        public static int currentGold;
         private float timer;
         private float cooldownTime = 100;
         public static Vector2 minePosition;
@@ -26,6 +28,7 @@ namespace SpaceRTS
             //MineThread.IsBackground = true;
             minePosition = position;
             color = Color.White;
+            currentGold = GoldCapasity;
         }
 
         public override void LoadContent(ContentManager content)
@@ -35,11 +38,6 @@ namespace SpaceRTS
 
         public override void OnCollision(GameObject other)
         {
-            if (other is Worker && timer > cooldownTime)
-            {
-                Worker.currentGold += 100;
-            }
-            timer = 0;
         }
 
         public override void Update(GameTime gametime)
