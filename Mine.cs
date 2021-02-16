@@ -15,15 +15,15 @@ namespace SpaceRTS
         private float cooldownTime = 100;
         public static Vector2 minePosition;
 
-        //private static Semaphore MySemaphore = new Semaphore(0, 5);
         private static Semaphore MySemaphore = new Semaphore(0, 5);
+        
 
         private Thread MineThread;
 
         public Mine(Vector2 position)
         {
             this.position = position;
-            //MineThread.IsBackground = true;
+            MineThread.IsBackground = true;
             minePosition = position;
             color = Color.White;
         }
@@ -50,16 +50,14 @@ namespace SpaceRTS
             }
         }
 
-        /*
-        private static void Working()
-        static void Workline()
+        
+        public static void Workline()
         {
             for (int i = 1; 1 <= 5; i++)
             {
-                //new Thread(Enter).Start(i);
+                new Thread(Enter).Start(i);
             }
 
-            //Thread.Sleep(500);
             Thread.Sleep(500);
             MySemaphore.Release(5);
         }
@@ -70,6 +68,6 @@ namespace SpaceRTS
             Thread.Sleep(1000 * (int)Worker);
             MySemaphore.Release();
         }
-        */
+        
     }
 }
