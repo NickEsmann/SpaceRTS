@@ -14,6 +14,7 @@ namespace SpaceRTS
         private float timer;
         private float cooldownTime = 100;
         public static Vector2 minePosition;
+        private int scaleCount = 0;
 
         private static Semaphore MySemaphore = new Semaphore(0, 5);
         
@@ -26,6 +27,7 @@ namespace SpaceRTS
             //MineThread.IsBackground = true;
             minePosition = position;
             color = Color.White;
+            scale = new Vector2(1, 1);
         }
 
         public override void LoadContent(ContentManager content)
@@ -47,6 +49,25 @@ namespace SpaceRTS
             if (timer < cooldownTime + 1)
             {
                 timer += (float)gametime.ElapsedGameTime.TotalSeconds;
+            }
+
+            if(GameWorld.HGClicked == true && scaleCount < 50)
+            {
+                scaleCount++;
+                scale = new Vector2(1.2f, 1.2f);
+            }
+            if(scaleCount >= 50)
+            {
+                scale = new Vector2(1, 1);
+                scaleCount++;
+            }
+            if(scaleCount == 100)
+            {
+                scaleCount = 0;
+            }
+            if(GameWorld.HGClicked == false)
+            {
+                scale = new Vector2(1, 1);
             }
         }
 

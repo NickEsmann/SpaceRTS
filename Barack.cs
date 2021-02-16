@@ -13,6 +13,7 @@ namespace SpaceRTS
             sprite = GameWorld.sprites["Barack"];
             this.position = position;
             color = Color.White;
+            scale = new Vector2(1, 1);
 
         }
         public override void LoadContent(ContentManager content)

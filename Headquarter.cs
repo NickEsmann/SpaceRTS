@@ -23,6 +23,7 @@ namespace SpaceRTS
             this.position = position;
             color = Color.White;
             positionHG = position;
+            scale = new Vector2(1, 1);
         }
 
         public void AddGold(int Gold)
