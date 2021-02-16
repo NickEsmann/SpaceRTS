@@ -151,7 +151,7 @@ namespace SpaceRTS
             {
                 _spriteBatch.DrawString(headLine, "Press mouse 1 to place your HQ where you desire", HGText, Color.Blue);
             }
-
+            _spriteBatch.DrawString(font, "Gold currency", new Vector2(1800, 20), Color.Yellow);
             _spriteBatch.End();
             // TODO: Add your drawing code here
 
