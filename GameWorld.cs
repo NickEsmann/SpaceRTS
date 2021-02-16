@@ -186,8 +186,6 @@ namespace SpaceRTS
             MouseState mouseClick = Mouse.GetState();
             KeyboardState keyState = Keyboard.GetState();
 
-            
-
             if (mouseClick.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed && Clicked == false)
             {
                 canPlace = true;
