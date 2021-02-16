@@ -48,7 +48,7 @@ namespace SpaceRTS
                 timer += (float)gametime.ElapsedGameTime.TotalSeconds;
             }
 
-            if (GameWorld.HGClicked == true && scaleCount < 50)
+            if (GameWorld.HQClicked == true && scaleCount < 50)
             {
                 scaleCount++;
                 scale = new Vector2(1.2f, 1.2f);
@@ -62,7 +62,7 @@ namespace SpaceRTS
             {
                 scaleCount = 0;
             }
-            if (GameWorld.HGClicked == false)
+            if (GameWorld.HQClicked == false)
             {
                 scale = new Vector2(1, 1);
             }

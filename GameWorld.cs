@@ -18,11 +18,10 @@ namespace SpaceRTS
         private List<GameObject> gameObjects;
         private List<GameObject> Building;
         public static Dictionary<string, Texture2D> sprites = new Dictionary<string, Texture2D>();
-        private bool IsClicked = false;
-        private bool Clicked = false;
+        private bool choosing = false;
         private Texture2D t;
         private Vector2 currentMousPosition = new Vector2(Cursor.Position.X, Cursor.Position.Y);
-        private bool DropDownMenu = false;
+        private bool dropDownMenu = false;
         private List<Rectangle> rects = new List<Rectangle>();
         private SpriteFont font;
         private Vector2 textPos1;
@@ -32,11 +31,11 @@ namespace SpaceRTS
         private bool canPlace;
         private Vector2 buildPos;
         private bool HQPlaced = false;
-        private Vector2 HGText;
+        private Vector2 HQText;
         private SpriteFont headLine;
         public static List<GameObject> deleteObjects;
-        public static bool HGClicked = false;
-        private Vector2 HGPosition;
+        public static bool HQClicked = false;
+        private Vector2 HQPosition;
 
         public GameWorld()
         {
@@ -88,6 +87,7 @@ namespace SpaceRTS
 
         protected override void Update(GameTime gameTime)
         {
+
             foreach (GameObject gob in gameObjects)
             {
                 gob.Update(gameTime);
@@ -103,7 +103,7 @@ namespace SpaceRTS
 
             if (!HQPlaced)
             {
-                BuildHQ();
+                buildHQ();
             }
             if (HQPlaced)
             {
@@ -139,14 +139,7 @@ namespace SpaceRTS
             Rectangle buildOption2 = new Rectangle((int)currentMousPosition.X, (int)currentMousPosition.Y + 51, 200, 50);
             Rectangle buildOption3 = new Rectangle((int)currentMousPosition.X, (int)currentMousPosition.Y + 102, 200, 50);
 
-            if (IsClicked)
-            {
-                _spriteBatch.Draw(t, buildOption1, Color.Black);
-                _spriteBatch.Draw(t, buildOption2, Color.Black);
-                _spriteBatch.Draw(t, buildOption3, Color.Black);
-            }
-
-            if (DropDownMenu)
+            if (dropDownMenu)
             {
                 foreach (Rectangle r in rects)
                 {
@@ -162,7 +155,7 @@ namespace SpaceRTS
             }
             if (!HQPlaced)
             {
-                _spriteBatch.DrawString(headLine, "Press mouse 1 to place your HQ where you desire", HGText, Color.Blue);
+                _spriteBatch.DrawString(headLine, "Press mouse 1 to place your HQ where you desire", HQText, Color.Blue);
             }
             _spriteBatch.DrawString(font, "Gold currency", new Vector2(1800, 20), Color.Yellow);
             _spriteBatch.End();
@@ -176,9 +169,9 @@ namespace SpaceRTS
             deleteObjects.Add(go);
         }
 
-        private void BuildHQ()
+        private void buildHQ()
         {
-            HGText = new Vector2(600, 75);
+            HQText = new Vector2(600, 75);
             MouseState mouseHQClick = Mouse.GetState();
             if (mouseHQClick.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
             {
@@ -190,7 +183,7 @@ namespace SpaceRTS
                         if (new Rectangle(Cursor.Position.X, Cursor.Position.Y, 1, 1).Intersects(new Rectangle(x * 65, y * 65, 65, 65)))
                         {
                             Building.Add(new Headquarter(new Vector2(x * 65, y * 65)));
-                            HGPosition = new Vector2(x * 65, y * 65);
+                            HQPosition = new Vector2(x * 65, y * 65);
                             HQPlaced = true;
                         }
                     }
@@ -203,7 +196,7 @@ namespace SpaceRTS
             MouseState mouseClick = Mouse.GetState();
             KeyboardState keyState = Keyboard.GetState();
 
-            if (mouseClick.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed && Clicked == false)
+            if (mouseClick.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed && choosing == false)
             {
                 canPlace = true;
                 for (int x = 0; x < 30; x++)
@@ -224,48 +217,48 @@ namespace SpaceRTS
                             textPos3 = new Vector2(x * 65 + 75, y * 65 + 115);
                             textPos4 = new Vector2(x * 65 + 75, y * 65 + 165);
 
-                            DropDownMenu = true;
+                            dropDownMenu = true;
 
-                            Clicked = true;
+                            choosing = true;
 
                             buildPos = new Vector2(x * 65, y * 65);
                         }
                     }
                 }
             }
-            if (mouseClick.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Released)
-                if (canPlace)
+            if (canPlace)
+            {
+                if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D1))
                 {
-                    if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D1))
-                    {
-                        Building.Add(new Bank(new Vector2(buildPos.X, buildPos.Y)));
-                        rects.Clear();
-                        Clicked = false;
-                        canPlace = false;
-                    }
-                    if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D2))
-                    {
-                        Building.Add(new Barack(new Vector2(buildPos.X, buildPos.Y)));
-                        rects.Clear();
-                        Clicked = false;
-                        canPlace = false;
-                    }
-                    if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D3))
-                    {
-                        Building.Add(new Factory(new Vector2(buildPos.X, buildPos.Y)));
-                        rects.Clear();
-                        Clicked = false;
-                        canPlace = false;
-                    }
-                    if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D4))
-                    {
-                        Building.Add(new Lab(new Vector2(buildPos.X, buildPos.Y)));
-                        rects.Clear();
-                        Clicked = false;
-                        canPlace = false;
-                    }
-                    HGClicked = false;
+                    Building.Add(new Bank(new Vector2(buildPos.X, buildPos.Y)));
+                    rects.Clear();
+                    choosing = false;
+                    canPlace = false;
                 }
+                if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D2))
+                {
+                    Building.Add(new Barack(new Vector2(buildPos.X, buildPos.Y)));
+                    rects.Clear();
+                    choosing = false;
+                    canPlace = false;
+                }
+                if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D3))
+                {
+                    Building.Add(new Factory(new Vector2(buildPos.X, buildPos.Y)));
+                    rects.Clear();
+                    choosing = false;
+                    canPlace = false;
+                }
+                if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D4))
+                {
+                    Building.Add(new Lab(new Vector2(buildPos.X, buildPos.Y)));
+                    rects.Clear();
+                    choosing = false;
+                    canPlace = false;
+                }
+                HQClicked = false;
+            }
+
 
             if (rects.Count > 4)
             {
@@ -273,12 +266,12 @@ namespace SpaceRTS
             }
             if (mouseClick.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
             {
-                if (new Rectangle(Cursor.Position.X, Cursor.Position.Y, 1, 1).Intersects(new Rectangle((int)HGPosition.X, (int)HGPosition.Y, 65, 65)))
+                if (new Rectangle(Cursor.Position.X, Cursor.Position.Y, 1, 1).Intersects(new Rectangle((int)HQPosition.X, (int)HQPosition.Y, 110, 120)))
                 {
-                    HGClicked = true;
+                    HQClicked = true;
                 }
                 rects.Clear();
-                Clicked = false;
+                choosing = false;
                 canPlace = false;
             }
         }
