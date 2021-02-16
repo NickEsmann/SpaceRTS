@@ -18,12 +18,12 @@ namespace SpaceRTS
         private static Semaphore MySemaphore = new Semaphore(0, 5);
         
 
-        private Thread MineThread;
+        //private Thread MineThread;
 
         public Mine(Vector2 position)
         {
             this.position = position;
-            MineThread.IsBackground = true;
+            //MineThread.IsBackground = true;
             minePosition = position;
             color = Color.White;
         }
@@ -50,24 +50,24 @@ namespace SpaceRTS
             }
         }
 
-        
-        public static void Workline()
-        {
-            for (int i = 1; 1 <= 5; i++)
-            {
-                new Thread(Enter).Start(i);
-            }
 
-            Thread.Sleep(500);
-            MySemaphore.Release(5);
-        }
+        //    public static void Workline()
+        //    {
+        //        for (int i = 1; 1 <= 5; i++)
+        //        {
+        //            new Thread(Enter).Start(i);
+        //        }
 
-        static void Enter(object Worker)
-        {
-            MySemaphore.WaitOne();
-            Thread.Sleep(1000 * (int)Worker);
-            MySemaphore.Release();
-        }
-        
+        //        Thread.Sleep(500);
+        //        MySemaphore.Release(5);
+        //    }
+
+        //    static void Enter(object Worker)
+        //    {
+        //        MySemaphore.WaitOne();
+        //        Thread.Sleep(1000 * (int)Worker);
+        //        MySemaphore.Release();
+        //    }
+
     }
 }
