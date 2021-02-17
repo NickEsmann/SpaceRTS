@@ -28,6 +28,7 @@ namespace SpaceRTS
 
         public Worker(int id)
         {
+            sprite = GameWorld.sprites["Worker"];
             this.id = id;
             goldCap = 300;
             currentGold = 0;
@@ -41,7 +42,7 @@ namespace SpaceRTS
 
         public override void LoadContent(ContentManager content)
         {
-            sprite = content.Load<Texture2D>("Worker");
+            //sprite = content.Load<Texture2D>("Worker");
         }
 
         public override void OnCollision(GameObject other)

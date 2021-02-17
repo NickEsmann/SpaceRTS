@@ -12,7 +12,7 @@ namespace SpaceRTS
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Map map;
-        private Worker worker;
+        //private Worker worker;
         private Mine mine;
         private List<GameObject> miner;
         private List<GameObject> gameObjects;
@@ -53,7 +53,7 @@ namespace SpaceRTS
         {
             // TODO: Add your initialization logic here
             map = new Map();
-            worker = new Worker(1);            
+            //worker = new Worker(1);            
             miner = new List<GameObject>();
             deleteObjects = new List<GameObject>();
             //miner.Add(new Mine(new Vector2(300, 100)));
@@ -64,7 +64,7 @@ namespace SpaceRTS
             gameObjects = new List<GameObject>();
             Building = new List<GameObject>();
             Workers = new List<GameObject>();
-            gameObjects.Add(worker);
+            //gameObjects.Add(worker);
             gameObjects.AddRange(miner);
             base.Initialize();
         }
@@ -85,6 +85,7 @@ namespace SpaceRTS
             sprites.Add("Bank", Content.Load<Texture2D>("Bank"));
             sprites.Add("Factory", Content.Load<Texture2D>("Factory"));
             sprites.Add("Lab", Content.Load<Texture2D>("Lab"));
+            sprites.Add("Worker", Content.Load<Texture2D>("Worker"));
             font = Content.Load<SpriteFont>("font");
             headLine = Content.Load<SpriteFont>("HeadLine");
             // TODO: use this.Content to load your game content here
@@ -95,7 +96,10 @@ namespace SpaceRTS
             foreach (GameObject gob in gameObjects)
             {
                 gob.Update(gameTime);
-                worker.CheckCollision(gob);
+                foreach (Worker worker in Workers)
+                {
+                    worker.CheckCollision(gob);
+                }
             }
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
                 Exit();
