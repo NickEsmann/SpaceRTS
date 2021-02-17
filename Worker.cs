@@ -16,9 +16,9 @@ namespace SpaceRTS
         private Thread t;
         private int goldCap;
         public static int currentGold;
-        private float speed = 5;
+        private float speed = 0.1f;
         private float timer;
-        private float coolDown = 5;
+        private float coolDown = 2;
         private int stamina = 100;
         private Vector2 chaseLine;
         private float deltaTime;
@@ -65,18 +65,16 @@ namespace SpaceRTS
                 {
                     Mine.currentGold -= goldCap;
                     currentGold = goldCap;
-                    speed = 0;
                     Thread.Sleep(5000);
-                    speed = 5;
+                    speed = 0.01f;
                     working = false;
                 }
                 if (sleeping)
                 {
                     Headquarter.CurrentGold += currentGold;
                     currentGold = 0;
-                    speed = 0;
                     Thread.Sleep(5000);
-                    speed = 5;
+                    speed = 0.01f;
                     sleeping = false;
                 }
             }
@@ -86,7 +84,6 @@ namespace SpaceRTS
         {
             if (deltaTime >= coolDown)
                 deltaTime = 0;
-            deltaTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (currentGold >= goldCap)
             {
                 //Gå til HQ
@@ -107,22 +104,7 @@ namespace SpaceRTS
                     position += chaseLine * speed * deltaTime;
                 }
             }
-
-            //if (timer < coolDown + 1)
-            //{
-            //    timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //}
-
-            //if (timer > coolDown)
-            //{
-            //    stamina--;
-            //    timer = 0;
-
-            //    if (timer < coolDown + 1)
-            //    {
-            //        timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //    }
-            //}
+            deltaTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
     }
 }
