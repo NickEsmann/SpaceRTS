@@ -17,6 +17,7 @@ namespace SpaceRTS
         private List<GameObject> miner;
         private List<GameObject> gameObjects;
         private List<GameObject> Building;
+        private List<GameObject> Workers;
         public static Dictionary<string, Texture2D> sprites = new Dictionary<string, Texture2D>();
         private bool choosing = false;
         private Texture2D t;
@@ -62,6 +63,7 @@ namespace SpaceRTS
             //miner.Add(new Mine(new Vector2(1400, 700)));
             gameObjects = new List<GameObject>();
             Building = new List<GameObject>();
+            Workers = new List<GameObject>();
             gameObjects.Add(worker);
             gameObjects.AddRange(miner);
             base.Initialize();
@@ -100,9 +102,11 @@ namespace SpaceRTS
 
             // TODO: Add your update logic here
             gameObjects.AddRange(Building);
+            gameObjects.AddRange(Workers);
             gameObjects.AddRange(miner);
             Building.Clear();
             miner.Clear();
+            Workers.Clear();
 
             if (!HQPlaced)
             {
@@ -205,6 +209,7 @@ namespace SpaceRTS
                             Building.Add(new Headquarter(new Vector2(x * 65, y * 65)));
                             HQPosition = new Vector2(x * 65, y * 65);
                             HQPlaced = true;
+                            Workers.Add(new Worker(x));
                         }
                     }
                 }

@@ -87,7 +87,7 @@ namespace SpaceRTS
             if (deltaTime >= coolDown)
                 deltaTime = 0;
             deltaTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            Debug.WriteLine(deltaTime);
+            //Debug.WriteLine(deltaTime);
             if (currentGold >= goldCap)
             {
                 //Gå til HQ
