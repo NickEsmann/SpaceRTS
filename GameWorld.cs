@@ -30,15 +30,14 @@ namespace SpaceRTS
         private Vector2 textPos4;
         private bool canPlace;
         private Vector2 buildPos;
-        private bool HQPlaced = false;
+        public static bool HQPlaced = false;
         private Vector2 HQText;
         private SpriteFont headLine;
         public static List<GameObject> deleteObjects;
         public static bool HQClicked = false;
         private Vector2 HQPosition;
         private Texture2D collisionTexture;
-        public static bool HGClicked = false;
-        private Vector2 HGPosition;
+        int goldHolder = 0;
 
         public GameWorld()
         {
@@ -53,7 +52,7 @@ namespace SpaceRTS
         {
             // TODO: Add your initialization logic here
             map = new Map();
-            worker = new Worker(1);
+            worker = new Worker(1);            
             miner = new List<GameObject>();
             deleteObjects = new List<GameObject>();
             //miner.Add(new Mine(new Vector2(300, 100)));
@@ -156,9 +155,9 @@ namespace SpaceRTS
                 DrawCollisionBox(go);
             }
 
-            Rectangle buildOption1 = new Rectangle((int)currentMousPosition.X, (int)currentMousPosition.Y, 200, 50);
-            Rectangle buildOption2 = new Rectangle((int)currentMousPosition.X, (int)currentMousPosition.Y + 51, 200, 50);
-            Rectangle buildOption3 = new Rectangle((int)currentMousPosition.X, (int)currentMousPosition.Y + 102, 200, 50);
+            Rectangle buildOption1 = new Rectangle((int)currentMousPosition.X, (int)currentMousPosition.Y, 300, 50);
+            Rectangle buildOption2 = new Rectangle((int)currentMousPosition.X, (int)currentMousPosition.Y + 51, 300, 50);
+            Rectangle buildOption3 = new Rectangle((int)currentMousPosition.X, (int)currentMousPosition.Y + 102, 300, 50);
 
             if (dropDownMenu)
             {
@@ -168,17 +167,17 @@ namespace SpaceRTS
                 }
                 if (rects.Count > 1)
                 {
-                    _spriteBatch.DrawString(font, "1. Bank", textPos1, Color.White);
-                    _spriteBatch.DrawString(font, "2. Barack", textPos2, Color.White);
-                    _spriteBatch.DrawString(font, "3. Factory", textPos3, Color.White);
-                    _spriteBatch.DrawString(font, "4. Lab", textPos4, Color.White);
+                    _spriteBatch.DrawString(font, "1. Bank 300$", textPos1, Color.White);
+                    _spriteBatch.DrawString(font, "2. Barack 200$", textPos2, Color.White);
+                    _spriteBatch.DrawString(font, "3. Factory 150$", textPos3, Color.White);
+                    _spriteBatch.DrawString(font, "4. Lab 500$", textPos4, Color.White);
                 }
             }
             if (!HQPlaced)
             {
                 _spriteBatch.DrawString(headLine, "Press mouse 1 to place your HQ where you desire", HQText, Color.Blue);
             }
-            _spriteBatch.DrawString(font, $"Gold currency {Headquarter.CurrentGold}", new Vector2(1600, 20), Color.Yellow);
+            _spriteBatch.DrawString(font, $"Gold currency {Headquarter.CurrentGold}$", new Vector2(1600, 20), Color.Yellow);
             _spriteBatch.End();
             // TODO: Add your drawing code here
 
@@ -249,33 +248,41 @@ namespace SpaceRTS
             }
             if (canPlace)
             {
-                if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D1))
+                if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D1) && Headquarter.CurrentGold >= 300)
                 {
                     Building.Add(new Bank(new Vector2(buildPos.X, buildPos.Y)));
                     rects.Clear();
                     choosing = false;
                     canPlace = false;
+                    goldHolder = Headquarter.CurrentGold - 300;
+                    Headquarter.CurrentGold = goldHolder;
                 }
-                if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D2))
+                if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D2) && Headquarter.CurrentGold >= 200)
                 {
                     Building.Add(new Barack(new Vector2(buildPos.X, buildPos.Y)));
                     rects.Clear();
                     choosing = false;
                     canPlace = false;
+                    goldHolder = Headquarter.CurrentGold - 200;
+                    Headquarter.CurrentGold = goldHolder;
                 }
-                if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D3))
+                if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D3) && Headquarter.CurrentGold >= 150)
                 {
                     Building.Add(new Factory(new Vector2(buildPos.X, buildPos.Y)));
                     rects.Clear();
                     choosing = false;
                     canPlace = false;
+                    goldHolder = Headquarter.CurrentGold - 150;
+                    Headquarter.CurrentGold = goldHolder;
                 }
-                if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D4))
+                if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D4) && Headquarter.CurrentGold >= 500)
                 {
                     Building.Add(new Lab(new Vector2(buildPos.X, buildPos.Y)));
                     rects.Clear();
                     choosing = false;
                     canPlace = false;
+                    goldHolder = Headquarter.CurrentGold - 500;
+                    Headquarter.CurrentGold = goldHolder;
                 }
                 HQClicked = false;
             }
