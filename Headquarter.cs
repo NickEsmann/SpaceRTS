@@ -9,7 +9,7 @@ namespace SpaceRTS
 {
     internal class Headquarter : GameObject
     {
-        public int Lv = 0;
+        public static int Lv = 0;
         public static int GoldCapasity = 1000;
         public static int CurrentGold = 0;
         public static Vector2 positionHG;
@@ -29,6 +29,12 @@ namespace SpaceRTS
 
         public override void Update(GameTime gametime)
         {
+            if (CurrentGold >= GoldCapasity)
+            {
+                Lv++;
+                CurrentGold = 0;
+                GoldCapasity *= 2;
+            }
         }
 
         public override void OnCollision(GameObject other)

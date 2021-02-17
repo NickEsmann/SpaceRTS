@@ -37,7 +37,8 @@ namespace SpaceRTS
         public static bool HQClicked = false;
         private Vector2 HQPosition;
         private Texture2D collisionTexture;
-        int goldHolder = 0;
+        private int goldHolder = 0;
+        private List<GameObject> workers;
 
         public GameWorld()
         {
@@ -52,7 +53,8 @@ namespace SpaceRTS
         {
             // TODO: Add your initialization logic here
             map = new Map();
-            worker = new Worker(1);            
+            workers = new List<GameObject>();
+            //worker = new Worker(0);
             miner = new List<GameObject>();
             deleteObjects = new List<GameObject>();
             //miner.Add(new Mine(new Vector2(300, 100)));
@@ -62,7 +64,7 @@ namespace SpaceRTS
             //miner.Add(new Mine(new Vector2(1400, 700)));
             gameObjects = new List<GameObject>();
             Building = new List<GameObject>();
-            gameObjects.Add(worker);
+            //gameObjects.Add(worker);
             gameObjects.AddRange(miner);
             base.Initialize();
         }
@@ -83,6 +85,7 @@ namespace SpaceRTS
             sprites.Add("Bank", Content.Load<Texture2D>("Bank"));
             sprites.Add("Factory", Content.Load<Texture2D>("Factory"));
             sprites.Add("Lab", Content.Load<Texture2D>("Lab"));
+            sprites.Add("Worker", Content.Load<Texture2D>("Worker"));
             font = Content.Load<SpriteFont>("font");
             headLine = Content.Load<SpriteFont>("HeadLine");
             // TODO: use this.Content to load your game content here
@@ -90,19 +93,25 @@ namespace SpaceRTS
 
         protected override void Update(GameTime gameTime)
         {
-            foreach (GameObject gob in gameObjects)
-            {
-                gob.Update(gameTime);
-                worker.CheckCollision(gob);
-            }
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            gameObjects.AddRange(workers);
             gameObjects.AddRange(Building);
             gameObjects.AddRange(miner);
+            foreach (GameObject gob in gameObjects)
+            {
+                gob.Update(gameTime);
+                foreach (Worker worker in workers)
+                {
+                    worker.CheckCollision(gob);
+                }
+            }
             Building.Clear();
             miner.Clear();
+            //workers.Clear();
+
+            // TODO: Add your update logic here
 
             if (!HQPlaced)
             {
@@ -203,6 +212,7 @@ namespace SpaceRTS
                         if (new Rectangle(Cursor.Position.X, Cursor.Position.Y, 1, 1).Intersects(new Rectangle(x * 65, y * 65, 65, 65)))
                         {
                             Building.Add(new Headquarter(new Vector2(x * 65, y * 65)));
+                            workers.Add(new Worker(0));
                             HQPosition = new Vector2(x * 65, y * 65);
                             HQPlaced = true;
                         }
