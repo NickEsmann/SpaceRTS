@@ -11,23 +11,20 @@ namespace SpaceRTS
 {
     internal class Worker : GameObject
     {
-        private int GoldCapasity = 1000;
-<<<<<<< HEAD
-=======
-        private GameWorld gameworld;
->>>>>>> parent of 3b130d1 (Boiz i Fix!!)
         private bool isDead = false;
         private int id;
         private Thread t;
         private int goldCap;
         public static int currentGold;
-        private float speed = 10;
+        private float speed = 5;
         private float timer;
-        private float coolDown = 1;
+        private float coolDown = 5;
         private int stamina = 100;
         private Vector2 chaseLine;
         private float deltaTime;
         private float cooldownTime = 50;
+        private bool working = false;
+        private bool sleeping = false;
 
         public Worker(int id)
         {
@@ -49,80 +46,50 @@ namespace SpaceRTS
 
         public override void OnCollision(GameObject other)
         {
-            if (other is Headquarter && timer > cooldownTime)
+            if (other is Mine)
             {
-<<<<<<< HEAD
                 working = true;
-=======
-                if (Headquarter.GoldCapasity <= 0)
-                {
-                    gameworld.Destroy(this);
-                }
-                Headquarter.CurrentGold += currentGold;
-                currentGold = 0;
-                timer = 0;
->>>>>>> parent of 3b130d1 (Boiz i Fix!!)
             }
 
-            if (other is Mine && timer > cooldownTime)
+            if (other is Headquarter)
             {
-<<<<<<< HEAD
                 sleeping = true;
-=======
-                if (Mine.GoldCapasity <= 0)
-                {
-                    gameworld.Destroy(this);
-                }
-                Mine.currentGold -= GoldCapasity;
-                currentGold = GoldCapasity;
-                timer = 0;
->>>>>>> parent of 3b130d1 (Boiz i Fix!!)
             }
         }
 
-        //public void AddGold(int Gold)
-        //{
-        //    if (CurrentGold <= GoldCapasity)
-        //    {
-        //        Lv++;
-        //        CurrentGold = 0;
-        //        GoldCapasity *= 2;
-        //    }
-        //    else
-        //        CurrentGold += Gold;
-        //}
-
         public void Work()
         {
-            if (working)
+            while (!isDead)
             {
-<<<<<<< HEAD
-                Mine.currentGold -= goldCap;
-                currentGold = goldCap;
-
-                Thread.Sleep(1000);
-                working = false;
-            }
-            if (sleeping)
-            {
-                Headquarter.CurrentGold += currentGold;
-                currentGold = 0;
-
-                Thread.Sleep(1000);
-                sleeping = false;
-=======
-                Thread.Sleep(1000);
->>>>>>> parent of 3b130d1 (Boiz i Fix!!)
+                if (working)
+                {
+                    Mine.currentGold -= goldCap;
+                    currentGold = goldCap;
+                    speed = 0;
+                    Thread.Sleep(5000);
+                    speed = 5;
+                    working = false;
+                }
+                if (sleeping)
+                {
+                    Headquarter.CurrentGold += currentGold;
+                    currentGold = 0;
+                    speed = 0;
+                    Thread.Sleep(5000);
+                    speed = 5;
+                    sleeping = false;
+                }
             }
         }
 
         public override void Update(GameTime gameTime)
         {
-            Debug.WriteLine(Headquarter.positionHG);
+            if (deltaTime >= coolDown)
+                deltaTime = 0;
             deltaTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (currentGold! <= goldCap)
+            Debug.WriteLine(deltaTime);
+            if (currentGold >= goldCap)
             {
-<<<<<<< HEAD
                 //Gå til HQ
                 if (position != Headquarter.positionHG)
                 {
@@ -130,36 +97,33 @@ namespace SpaceRTS
                     chaseLine.Normalize();
                     position += chaseLine * speed * deltaTime;
                 }
-=======
-                //Gå til Mine
-                chaseLine = Mine.minePosition - position;
-                chaseLine.Normalize();
->>>>>>> parent of 3b130d1 (Boiz i Fix!!)
             }
             else
             {
-                //Gå til HQ
-                chaseLine = Headquarter.positionHG - position;
-                chaseLine.Normalize();
-            }
-
-            position += chaseLine * speed * deltaTime;
-
-            if (timer < coolDown + 1)
-            {
-                timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            }
-
-            if (timer > coolDown)
-            {
-                stamina--;
-                timer = 0;
-
-                if (timer < coolDown + 1)
+                //Gå til Mine
+                if (Mine.minePosition != position)
                 {
-                    timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    chaseLine = Mine.minePosition - position;
+                    chaseLine.Normalize();
+                    position += chaseLine * speed * deltaTime;
                 }
             }
+
+            //if (timer < coolDown + 1)
+            //{
+            //    timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //}
+
+            //if (timer > coolDown)
+            //{
+            //    stamina--;
+            //    timer = 0;
+
+            //    if (timer < coolDown + 1)
+            //    {
+            //        timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //    }
+            //}
         }
     }
 }
