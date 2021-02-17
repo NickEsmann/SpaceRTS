@@ -53,7 +53,11 @@ namespace SpaceRTS
         {
             // TODO: Add your initialization logic here
             map = new Map();
+<<<<<<< HEAD
             //worker = new Worker(1);            
+=======
+            worker = new Worker(1);            
+>>>>>>> parent of 3882e53 (Prøv)
             miner = new List<GameObject>();
             deleteObjects = new List<GameObject>();
             //miner.Add(new Mine(new Vector2(300, 100)));
@@ -63,8 +67,12 @@ namespace SpaceRTS
             //miner.Add(new Mine(new Vector2(1400, 700)));
             gameObjects = new List<GameObject>();
             Building = new List<GameObject>();
+<<<<<<< HEAD
             Workers = new List<GameObject>();
             //gameObjects.Add(worker);
+=======
+            gameObjects.Add(worker);
+>>>>>>> parent of 3882e53 (Prøv)
             gameObjects.AddRange(miner);
             base.Initialize();
         }
@@ -85,7 +93,6 @@ namespace SpaceRTS
             sprites.Add("Bank", Content.Load<Texture2D>("Bank"));
             sprites.Add("Factory", Content.Load<Texture2D>("Factory"));
             sprites.Add("Lab", Content.Load<Texture2D>("Lab"));
-            sprites.Add("Worker", Content.Load<Texture2D>("Worker"));
             font = Content.Load<SpriteFont>("font");
             headLine = Content.Load<SpriteFont>("HeadLine");
             // TODO: use this.Content to load your game content here
@@ -96,21 +103,31 @@ namespace SpaceRTS
             foreach (GameObject gob in gameObjects)
             {
                 gob.Update(gameTime);
+<<<<<<< HEAD
                 foreach (Worker worker in Workers)
                 {
                     worker.CheckCollision(gob);
                 }
+=======
+                worker.CheckCollision(gob);
+>>>>>>> parent of 3882e53 (Prøv)
             }
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
                 Exit();
 
             // TODO: Add your update logic here
             gameObjects.AddRange(Building);
+<<<<<<< HEAD
             gameObjects.AddRange(Workers);
             gameObjects.AddRange(miner);
             Building.Clear();
             miner.Clear();
             Workers.Clear();
+=======
+            gameObjects.AddRange(miner);
+            Building.Clear();
+            miner.Clear();
+>>>>>>> parent of 3882e53 (Prøv)
 
             if (!HQPlaced)
             {
