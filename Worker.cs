@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using System.Diagnostics;
 
 namespace SpaceRTS
 {
@@ -23,6 +24,8 @@ namespace SpaceRTS
         private Vector2 chaseLine;
         private float deltaTime;
         private float cooldownTime = 50;
+        private bool working = false;
+        private bool sleeping = false;
 
         public Worker(int id)
         {
@@ -44,26 +47,14 @@ namespace SpaceRTS
 
         public override void OnCollision(GameObject other)
         {
-            if (other is Headquarter && timer > cooldownTime)
+            if (other is Headquarter)
             {
-                if (Headquarter.GoldCapasity <= 0)
-                {
-                    GameWorld.Destroy(this);
-                }
-                Headquarter.CurrentGold += currentGold;
-                currentGold = 0;
-                timer = 0;
+                working = true;
             }
 
-            if (other is Mine && timer > cooldownTime)
+            if (other is Mine)
             {
-                if (Mine.GoldCapasity <= 0)
-                {
-                    GameWorld.Destroy(this);
-                }
-                Mine.currentGold -= GoldCapasity;
-                currentGold = GoldCapasity;
-                timer = 0;
+                sleeping = true;
             }
         }
 
@@ -81,48 +72,65 @@ namespace SpaceRTS
 
         public void Work()
         {
-            while (!isDead)
+            if (working)
             {
+                Mine.currentGold -= goldCap;
+                currentGold = goldCap;
+
                 Thread.Sleep(1000);
+                working = false;
+            }
+            if (sleeping)
+            {
+                Headquarter.CurrentGold += currentGold;
+                currentGold = 0;
+
+                Thread.Sleep(1000);
+                sleeping = false;
             }
         }
 
         public override void Update(GameTime gameTime)
         {
+            Debug.WriteLine(Headquarter.positionHG);
             deltaTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (currentGold <= goldCap)
+            if (currentGold >= goldCap)
             {
-                //Gå til Mine
-                chaseLine = Mine.minePosition - position;
-                chaseLine.Normalize();
+                //Gå til HQ
+                if (position != Headquarter.positionHG)
+                {
+                    chaseLine = Headquarter.positionHG - position;
+                    chaseLine.Normalize();
+                    position += chaseLine * speed * deltaTime;
+                }
             }
             else
             {
-                //Gå til HQ
-                chaseLine = Headquarter.positionHG - position;
-                chaseLine.Normalize();
+                //Gå til Mine
+                if (Mine.minePosition != position)
+                {
+                    chaseLine = Mine.minePosition - position;
+                    chaseLine.Normalize();
+                    position += chaseLine * speed * deltaTime;
+                }
             }
-            if(GameWorld.HQClicked == true)
-            {
+            if (!working)
                 position += chaseLine * speed * deltaTime;
-            }
-            
 
-            if (timer < coolDown + 1)
+            if (timer < cooldownTime + 10)
             {
                 timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
 
-            if (timer > coolDown)
+            if (timer > cooldownTime)
             {
                 stamina--;
                 timer = 0;
-            }
 
-            if (stamina <= 0)
-            {
-                isDead = true;
-                GameWorld.Destroy(this);
+                if (timer < coolDown + 1)
+                {
+                    timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                }
             }
         }
     }
