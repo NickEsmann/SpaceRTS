@@ -12,6 +12,10 @@ namespace SpaceRTS
     internal class Worker : GameObject
     {
         private int GoldCapasity = 1000;
+<<<<<<< HEAD
+=======
+        private GameWorld gameworld;
+>>>>>>> parent of 3b130d1 (Boiz i Fix!!)
         private bool isDead = false;
         private int id;
         private Thread t;
@@ -24,8 +28,6 @@ namespace SpaceRTS
         private Vector2 chaseLine;
         private float deltaTime;
         private float cooldownTime = 50;
-        private bool working = false;
-        private bool sleeping = false;
 
         public Worker(int id)
         {
@@ -47,14 +49,34 @@ namespace SpaceRTS
 
         public override void OnCollision(GameObject other)
         {
-            if (other is Headquarter)
+            if (other is Headquarter && timer > cooldownTime)
             {
+<<<<<<< HEAD
                 working = true;
+=======
+                if (Headquarter.GoldCapasity <= 0)
+                {
+                    gameworld.Destroy(this);
+                }
+                Headquarter.CurrentGold += currentGold;
+                currentGold = 0;
+                timer = 0;
+>>>>>>> parent of 3b130d1 (Boiz i Fix!!)
             }
 
-            if (other is Mine)
+            if (other is Mine && timer > cooldownTime)
             {
+<<<<<<< HEAD
                 sleeping = true;
+=======
+                if (Mine.GoldCapasity <= 0)
+                {
+                    gameworld.Destroy(this);
+                }
+                Mine.currentGold -= GoldCapasity;
+                currentGold = GoldCapasity;
+                timer = 0;
+>>>>>>> parent of 3b130d1 (Boiz i Fix!!)
             }
         }
 
@@ -74,6 +96,7 @@ namespace SpaceRTS
         {
             if (working)
             {
+<<<<<<< HEAD
                 Mine.currentGold -= goldCap;
                 currentGold = goldCap;
 
@@ -87,6 +110,9 @@ namespace SpaceRTS
 
                 Thread.Sleep(1000);
                 sleeping = false;
+=======
+                Thread.Sleep(1000);
+>>>>>>> parent of 3b130d1 (Boiz i Fix!!)
             }
         }
 
@@ -94,8 +120,9 @@ namespace SpaceRTS
         {
             Debug.WriteLine(Headquarter.positionHG);
             deltaTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (currentGold >= goldCap)
+            if (currentGold! <= goldCap)
             {
+<<<<<<< HEAD
                 //Gå til HQ
                 if (position != Headquarter.positionHG)
                 {
@@ -103,26 +130,27 @@ namespace SpaceRTS
                     chaseLine.Normalize();
                     position += chaseLine * speed * deltaTime;
                 }
+=======
+                //Gå til Mine
+                chaseLine = Mine.minePosition - position;
+                chaseLine.Normalize();
+>>>>>>> parent of 3b130d1 (Boiz i Fix!!)
             }
             else
             {
-                //Gå til Mine
-                if (Mine.minePosition != position)
-                {
-                    chaseLine = Mine.minePosition - position;
-                    chaseLine.Normalize();
-                    position += chaseLine * speed * deltaTime;
-                }
+                //Gå til HQ
+                chaseLine = Headquarter.positionHG - position;
+                chaseLine.Normalize();
             }
-            if (!working)
-                position += chaseLine * speed * deltaTime;
 
-            if (timer < cooldownTime + 10)
+            position += chaseLine * speed * deltaTime;
+
+            if (timer < coolDown + 1)
             {
                 timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
 
-            if (timer > cooldownTime)
+            if (timer > coolDown)
             {
                 stamina--;
                 timer = 0;

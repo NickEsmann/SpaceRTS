@@ -34,9 +34,14 @@ namespace SpaceRTS
         private Vector2 HQText;
         private SpriteFont headLine;
         public static List<GameObject> deleteObjects;
+<<<<<<< HEAD
         public static bool HQClicked = false;
         private Vector2 HQPosition;
         private Texture2D collisionTexture;
+=======
+        public static bool HGClicked = false;
+        private Vector2 HGPosition;
+>>>>>>> parent of 3b130d1 (Boiz i Fix!!)
 
         public GameWorld()
         {
@@ -55,10 +60,17 @@ namespace SpaceRTS
             miner = new List<GameObject>();
             deleteObjects = new List<GameObject>();
             miner.Add(new Mine(new Vector2(300, 100)));
+<<<<<<< HEAD
             //miner.Add(new Mine(new Vector2(500, 800)));
             //miner.Add(new Mine(new Vector2(700, 200)));
             //miner.Add(new Mine(new Vector2(1270, 400)));
             //miner.Add(new Mine(new Vector2(1400, 700)));
+=======
+            miner.Add(new Mine(new Vector2(500, 800)));
+            miner.Add(new Mine(new Vector2(700, 200)));
+            miner.Add(new Mine(new Vector2(1270, 400)));
+            miner.Add(new Mine(new Vector2(1400, 700)));
+>>>>>>> parent of 3b130d1 (Boiz i Fix!!)
             gameObjects = new List<GameObject>();
             Building = new List<GameObject>();
             gameObjects.Add(worker);
@@ -92,7 +104,6 @@ namespace SpaceRTS
             foreach (GameObject gob in gameObjects)
             {
                 gob.Update(gameTime);
-                worker.CheckCollision(gob);
             }
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
                 Exit();
@@ -114,6 +125,7 @@ namespace SpaceRTS
 
             foreach (var item in gameObjects)
             {
+                item.CheckCollision(item);
                 foreach (var go in deleteObjects)
                 {
                     gameObjects.Remove(go);
@@ -150,7 +162,6 @@ namespace SpaceRTS
             foreach (GameObject go in gameObjects)
             {
                 go.Draw(_spriteBatch);
-                DrawCollisionBox(go);
             }
 
             Rectangle buildOption1 = new Rectangle((int)currentMousPosition.X, (int)currentMousPosition.Y, 200, 50);
@@ -182,7 +193,11 @@ namespace SpaceRTS
             base.Draw(gameTime);
         }
 
+<<<<<<< HEAD
         public static void Destroy(GameObject go)
+=======
+        public void Destroy(GameObject go)
+>>>>>>> parent of 3b130d1 (Boiz i Fix!!)
         {
             deleteObjects.Add(go);
         }
