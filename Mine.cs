@@ -10,7 +10,6 @@ namespace SpaceRTS
 {
     internal class Mine : GameObject
     {
-        private GameWorld gameworld;
         public static int GoldCapasity = 1000;
         public static int currentGold;
         private float timer;

@@ -41,6 +41,8 @@ namespace SpaceRTS
         private Vector2 HQPosition;
         private Texture2D collisionTexture;
         private int goldHolder = 0;
+        private int lv = 1;
+        private bool WorkerMade = false;
 
         public GameWorld()
         {
@@ -132,6 +134,18 @@ namespace SpaceRTS
                 }
             }
 
+            if(HQPlaced)
+            {
+                for (int i = 0; i < lv; i++)
+                {
+                    if (!WorkerMade)
+                    {
+                        Workers.Add(new Worker(i));
+                        WorkerMade = true;
+                    }
+                }
+            }
+
             //Listen rydes.
             deleteObjects.Clear();
 
@@ -215,7 +229,10 @@ namespace SpaceRTS
                             Building.Add(new Headquarter(new Vector2(x * 65, y * 65)));
                             HQPosition = new Vector2(x * 65, y * 65);
                             HQPlaced = true;
-                            Workers.Add(new Worker(x));
+                            
+                            
+
+
                         }
                     }
                 }
@@ -226,6 +243,8 @@ namespace SpaceRTS
         {
             MouseState mouseClick = Mouse.GetState();
             KeyboardState keyState = Keyboard.GetState();
+
+            
 
             if (mouseClick.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed && choosing == false)
             {
@@ -294,6 +313,8 @@ namespace SpaceRTS
                     canPlace = false;
                     goldHolder = Headquarter.CurrentGold - 500;
                     Headquarter.CurrentGold = goldHolder;
+                    lv++;
+                    WorkerMade = false;
                 }
                 HQClicked = false;
             }
