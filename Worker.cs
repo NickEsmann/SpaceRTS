@@ -90,7 +90,7 @@ namespace SpaceRTS
         public override void Update(GameTime gameTime)
         {
             deltaTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (currentGold! <= goldCap)
+            if (currentGold <= goldCap)
             {
                 //Gå til Mine
                 chaseLine = Mine.minePosition - position;
@@ -102,8 +102,11 @@ namespace SpaceRTS
                 chaseLine = Headquarter.positionHG - position;
                 chaseLine.Normalize();
             }
-
-            position += chaseLine * speed * deltaTime;
+            if(GameWorld.HQClicked == true)
+            {
+                position += chaseLine * speed * deltaTime;
+            }
+            
 
             if (timer < coolDown + 1)
             {
