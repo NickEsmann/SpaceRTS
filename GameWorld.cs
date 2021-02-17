@@ -12,11 +12,12 @@ namespace SpaceRTS
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Map map;
-        private Worker worker;
+        //private Worker worker;
         private Mine mine;
         private List<GameObject> miner;
         private List<GameObject> gameObjects;
         private List<GameObject> Building;
+        private List<GameObject> Workers;
         public static Dictionary<string, Texture2D> sprites = new Dictionary<string, Texture2D>();
         private bool choosing = false;
         private Texture2D t;
@@ -37,8 +38,7 @@ namespace SpaceRTS
         public static bool HQClicked = false;
         private Vector2 HQPosition;
         private Texture2D collisionTexture;
-        private int goldHolder = 0;
-        private List<GameObject> workers;
+        int goldHolder = 0;
 
         public GameWorld()
         {
@@ -53,8 +53,7 @@ namespace SpaceRTS
         {
             // TODO: Add your initialization logic here
             map = new Map();
-            workers = new List<GameObject>();
-            //worker = new Worker(0);
+            //worker = new Worker(1);            
             miner = new List<GameObject>();
             deleteObjects = new List<GameObject>();
             //miner.Add(new Mine(new Vector2(300, 100)));
@@ -64,6 +63,7 @@ namespace SpaceRTS
             //miner.Add(new Mine(new Vector2(1400, 700)));
             gameObjects = new List<GameObject>();
             Building = new List<GameObject>();
+            Workers = new List<GameObject>();
             //gameObjects.Add(worker);
             gameObjects.AddRange(miner);
             base.Initialize();
@@ -93,25 +93,24 @@ namespace SpaceRTS
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
-                Exit();
-
-            gameObjects.AddRange(workers);
-            gameObjects.AddRange(Building);
-            gameObjects.AddRange(miner);
             foreach (GameObject gob in gameObjects)
             {
                 gob.Update(gameTime);
-                foreach (Worker worker in workers)
+                foreach (Worker worker in Workers)
                 {
                     worker.CheckCollision(gob);
                 }
             }
-            Building.Clear();
-            miner.Clear();
-            //workers.Clear();
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
+                Exit();
 
             // TODO: Add your update logic here
+            gameObjects.AddRange(Building);
+            gameObjects.AddRange(Workers);
+            gameObjects.AddRange(miner);
+            Building.Clear();
+            miner.Clear();
+            Workers.Clear();
 
             if (!HQPlaced)
             {
@@ -212,9 +211,9 @@ namespace SpaceRTS
                         if (new Rectangle(Cursor.Position.X, Cursor.Position.Y, 1, 1).Intersects(new Rectangle(x * 65, y * 65, 65, 65)))
                         {
                             Building.Add(new Headquarter(new Vector2(x * 65, y * 65)));
-                            workers.Add(new Worker(0));
                             HQPosition = new Vector2(x * 65, y * 65);
                             HQPlaced = true;
+                            Workers.Add(new Worker(x));
                         }
                     }
                 }

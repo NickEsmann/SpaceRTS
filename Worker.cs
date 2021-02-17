@@ -16,9 +16,9 @@ namespace SpaceRTS
         private Thread t;
         private int goldCap;
         public static int currentGold;
-        private float speed = 1;
+        private float speed = 5;
         private float timer;
-        private float coolDown = 3;
+        private float coolDown = 5;
         private int stamina = 100;
         private Vector2 chaseLine;
         private float deltaTime;
@@ -36,19 +36,8 @@ namespace SpaceRTS
             t.IsBackground = true;
             t.Start();
             color = Color.White;
-            position = Headquarter.positionHG;
+            position = new Vector2(20, 20);
             scale = new Vector2(1, 1);
-            offsetX = 32;
-            offsetY = 32;
-        }
-
-        public override Rectangle Collision
-        {
-            get
-            {
-                return new Rectangle(
-                    (int)position.X + offsetX, (int)position.Y + offsetY, 65, 65);
-            }
         }
 
         public override void LoadContent(ContentManager content)
@@ -77,17 +66,19 @@ namespace SpaceRTS
                 {
                     Mine.currentGold -= goldCap;
                     currentGold = goldCap;
+                    speed = 0;
                     Thread.Sleep(5000);
+                    speed = 5;
                     working = false;
-                    sleeping = false;
                 }
                 if (sleeping)
                 {
                     Headquarter.CurrentGold += currentGold;
                     currentGold = 0;
+                    speed = 0;
                     Thread.Sleep(5000);
+                    speed = 5;
                     sleeping = false;
-                    working = false;
                 }
             }
         }
@@ -95,9 +86,10 @@ namespace SpaceRTS
         public override void Update(GameTime gameTime)
         {
             if (deltaTime >= coolDown)
-                deltaTime = 2;
+                deltaTime = 0;
             deltaTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (currentGold >= goldCap && sleeping == false)
+            //Debug.WriteLine(deltaTime);
+            if (currentGold >= goldCap)
             {
                 //Gå til HQ
                 if (position != Headquarter.positionHG)
@@ -110,7 +102,7 @@ namespace SpaceRTS
             else
             {
                 //Gå til Mine
-                if (Mine.minePosition != position && working == false)
+                if (Mine.minePosition != position)
                 {
                     chaseLine = Mine.minePosition - position;
                     chaseLine.Normalize();
