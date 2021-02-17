@@ -28,6 +28,7 @@ namespace SpaceRTS
 
         public Worker(int id)
         {
+            sprite = GameWorld.sprites["Worker"];
             this.id = id;
             goldCap = 300;
             currentGold = 0;
@@ -35,13 +36,12 @@ namespace SpaceRTS
             t.IsBackground = true;
             t.Start();
             color = Color.White;
-            position = new Vector2(20, 20);
+            position = Headquarter.positionHG;
             scale = new Vector2(1, 1);
         }
 
         public override void LoadContent(ContentManager content)
         {
-            sprite = content.Load<Texture2D>("Worker");
         }
 
         public override void OnCollision(GameObject other)
@@ -87,11 +87,6 @@ namespace SpaceRTS
             if (deltaTime >= coolDown)
                 deltaTime = 0;
             deltaTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-<<<<<<< HEAD
-            //Debug.WriteLine(deltaTime);
-=======
-            Debug.WriteLine(deltaTime);
->>>>>>> parent of 3882e53 (Prøv)
             if (currentGold >= goldCap)
             {
                 //Gå til HQ
