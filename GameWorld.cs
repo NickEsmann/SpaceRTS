@@ -17,7 +17,7 @@ namespace SpaceRTS
         private Mine mine;
 
         private List<GameObject> miner;
-        private List<GameObject> gameObjects;
+        private static List<GameObject> gameObjects;
         private List<GameObject> Building;
         private List<GameObject> Workers;
         public static Dictionary<string, Texture2D> sprites = new Dictionary<string, Texture2D>();
@@ -333,6 +333,11 @@ namespace SpaceRTS
                 choosing = false;
                 canPlace = false;
             }
+        }
+
+        public static void AddSoldier(Soldier soldier)
+        {
+            gameObjects.Add(soldier);
         }
     }
 }
