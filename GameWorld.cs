@@ -313,7 +313,6 @@ namespace SpaceRTS
                     canPlace = false;
                     goldHolder = Headquarter.CurrentGold - 500;
                     Headquarter.CurrentGold = goldHolder;
-                    
                     WorkerMade = false;
                 }
                 HQClicked = false;

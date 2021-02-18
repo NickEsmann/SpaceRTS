@@ -25,6 +25,7 @@ namespace SpaceRTS
         private float cooldownTime = 50;
         private bool working = false;
         private bool sleeping = false;
+        private object key = new object();
 
         public Worker(int id)
         {
@@ -61,22 +62,29 @@ namespace SpaceRTS
         {
             while (!isDead)
             {
-                if (working)
+                lock(key)
                 {
-                    Mine.currentGold -= goldCap;
-                    currentGold = goldCap;
-                    Thread.Sleep(5000);
-                    speed = 0.01f;
-                    working = false;
+                    if (working)
+                    {
+                        Mine.currentGold -= goldCap;
+                        currentGold = goldCap;
+                        Thread.Sleep(5000);
+                        speed = 0.01f;
+                        working = false;
+                    }
                 }
-                if (sleeping)
+                lock(key)
                 {
-                    Headquarter.CurrentGold += currentGold;
-                    currentGold = 0;
-                    Thread.Sleep(5000);
-                    speed = 0.01f;
-                    sleeping = false;
+                    if (sleeping)
+                    {
+                        Headquarter.CurrentGold += currentGold;
+                        currentGold = 0;
+                        Thread.Sleep(5000);
+                        speed = 0.01f;
+                        sleeping = false;
+                    }
                 }
+                
             }
         }
 
