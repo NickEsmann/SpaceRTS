@@ -9,7 +9,6 @@ namespace SpaceRTS
 {
     internal class Headquarter : GameObject
     {
-        public int Lv = 0;
         public static int GoldCapasity = 1000;
         public static int CurrentGold = 0;
         public static Vector2 positionHG;
